@@ -1,0 +1,83 @@
+<app-header *ngIf="!showLoggedData"></app-header>
+<app-after-login-header *ngIf="showLoggedData"></app-after-login-header>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb innerCrumb">
+    <li class="breadcrumb-item"><a routerLink="">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Whichlist</li>
+  </ol>
+</nav>
+
+<div class="container">
+
+
+
+<table *ngIf="allWhichListItems?.length>0" class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">name</th>
+        <th scope="col">price</th>
+        <th scope="col">discount</th>
+  
+        <th scope="col">sku</th>
+        <th scope="col">Image</th>
+        <th scope="col">addedOn</th>
+  
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of allWhichListItems">
+        <td>
+          <a (click)="openProduct(product)"  style="cursor: pointer;">
+            {{product.name}}
+          </a>
+      
+        </td>
+        <td>{{product.price}}</td>
+        <td>{{product.discount}}</td>
+        <td>{{product.sku}}</td>
+        <td *ngIf="product.masterImage==null">
+          <fa-icon [icon]="faImage"></fa-icon>
+        </td>
+        <td *ngIf="product.masterImage!=null">
+          <img style="width: 50px;" [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" />
+        </td>
+        <td>{{product.addedOn | date}}</td>
+  
+
+  
+        
+  
+        
+       
+          <td>
+              <button type="button" (click)="deleteProductFromWhishlist(product)"
+                class="btn btn-danger insideTablebtn small-btn">
+                <fa-icon [icon]="faTrashAlt"></fa-icon>
+                delete
+              </button>
+            </td>
+  
+      </tr>
+  
+    </tbody>
+  </table>
+  <div *ngIf="allWhichListItems?.length==0">
+  
+    <div class="text-center noProjectsMessage">
+      <fa-icon [icon]="faFolderOpen"></fa-icon>
+      <h4>there is no Products to show yet .</h4>
+    </div>
+  
+  </div>
+
+</div>
+
+<div *ngIf="showLoader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

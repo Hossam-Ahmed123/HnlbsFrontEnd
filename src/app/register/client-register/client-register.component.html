@@ -1,0 +1,131 @@
+<app-header></app-header>
+
+<div class="mt-4">
+  <div class="container">
+    <div *ngIf="showFormSubmit">
+  
+      <div class="row">
+
+
+        <form (keydown.enter)="$event.preventDefault()" class="col-lg-6 col-md-6 col-sm-12 col-12"
+          [(formGroup)]="registerForm" (ngSubmit)="register()">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="form-group">
+                <input type="text" name="name" class="form-control" formControlName="name"
+                  placeholder="Name" />
+                <span class="error-help"
+                  *ngIf="!registerForm.get('name').valid && registerForm.get('name').touched">
+                  <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                enter name
+                </span>
+              </div>
+            </div>
+          
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="form-group">
+                <input type="email" email name="email" class="form-control" formControlName="email"
+                  placeholder="email">
+                <span class="help-block error-help"
+                  *ngIf="!registerForm.get('email').valid && registerForm.get('email').touched">
+                  <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                  enter email
+                  
+                </span>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="form-group">
+                <input type="text" email name="address" class="form-control" formControlName="address"
+                  placeholder="address">
+                <span class="help-block error-help"
+                  *ngIf="!registerForm.get('address').valid && registerForm.get('address').touched">
+                  <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                  enter address
+                  
+                </span>
+              </div>
+            </div>
+
+             
+         
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="form-group">
+                <input type="text" [pattern]="regex" class="form-control" formControlName="phone"
+                  placeholder="phone">
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="form-group">
+                <input type="text" name="username" class="form-control" formControlName="username"
+                  placeholder="userName">
+                <span class="help-block error-help"
+                  *ngIf="!registerForm.get('username').valid && registerForm.get('username').touched">
+                  <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                  enter userName
+                  
+                </span>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="form-group relative">
+                <input id="password" type="password" name="password" class="form-control" formControlName="password"
+                  placeholder="password">
+                <span class="showHidePassword" *ngIf="showPasswordIcon" (click)="showPassword('password')">
+                  <fa-icon [icon]="faEye"></fa-icon>
+                </span>
+                <span class="showHidePassword" *ngIf="hidePasswordIcon" (click)="hidePassword('password')">
+                  <fa-icon [icon]="faEyeSlash"></fa-icon>
+                </span>
+                <span class="help-block error-help"
+                  *ngIf="!registerForm.get('password').valid && registerForm.get('password').touched">
+                  <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                  password must be at
+                  least 8 characters long
+                </span>
+              </div>
+
+            </div>
+           
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="clearfix text-center mb10">
+                <button [disabled]="!registerForm.valid" class="btn btn-success login-btn-last" type="submit">Sign Up
+                  </button>
+              </div>
+            </div>
+           
+
+          </div>
+          <div *ngIf="showLoader" class="loader">
+            <div class="cssload-container">
+              <div class="cssload-speeding-wheel"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="clearfix"></div>
+
+
+      <div *ngIf="showFailMessage" class="text-center fails success-project ">
+        <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+        <h2>error in register</h2>
+      </div>
+      <!-- <div *ngIf="showFailMessage" class="text-center fails stickyMessage "> 
+      <p>{{errorDetails}}</p>
+    </div> -->
+
+
+
+
+    </div>
+  </div>
+
+  <div class="text-center success-project" *ngIf="showSuccessMessage">
+    <fa-icon [icon]="faCheckCircle"></fa-icon>
+    <p>
+    registered successfully you will be redirected to login in seconds
+    </p>
+  </div>
+</div>
+
+<!-- <app-footer></app-footer> -->

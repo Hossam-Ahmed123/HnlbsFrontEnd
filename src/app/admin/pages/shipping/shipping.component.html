@@ -1,0 +1,138 @@
+<!-- <div class="row">
+    <div class="col-lg-6 mb-20">
+      <form [(formGroup)]="addShippingForm" (ngSubmit)="addShipping()">
+        <div class="form-group">
+            <h6>Country</h6>
+        <select (change)="logCountryEdit()"class="form-control" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="SelectedCountryIndex" >
+            <option *ngFor="let country of countriesList;let i=index" [value]="i">
+              {{country.country}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <h6>City</h6>
+          
+          <select class="form-control" formControlName="city">
+            <option *ngFor="let country of filteredCities;" [value]="country">
+              {{country}}
+            </option>
+          </select>
+          </div>
+        <div class="form-group">
+            <h6>value</h6>
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="value" placeholder="value" />
+            </div>
+    
+            <span *ngIf="!addShippingForm.get('value').valid && addShippingForm.get('value').touched">value</span>
+          </div>
+  
+  
+        
+  
+        <h6 *ngIf="addSuccess" class="text-success text-center">Shipping Added Successfully</h6>
+        <h6 *ngIf="addFail" class="text-danger text-center">error in Add Shipping</h6>
+        <button [disabled]="!addShippingForm.valid" type="submit"
+          class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+          add 
+        </button>
+      </form>
+  
+    </div>
+  </div> -->
+  
+  <!-- <pre>{{allBrands | json}}</pre> -->
+  <div class="clearfix"></div>
+  <table *ngIf="allShippingFees?.length>0" class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">City</th>
+        <th scope="col">Value</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let shipping of allShippingFees">
+        <td>{{shipping.city}}</td>
+        <td>{{shipping.value}}</td>
+       
+        <td>
+          <button type="button" (click)="openEditDialog(shipping)" class="btn btn-warning insideTablebtn small-btn">
+            <fa-icon [icon]="faEdit"></fa-icon>
+            edit
+          </button>
+        </td>
+  
+      </tr>
+  
+    </tbody>
+  </table>
+  
+  
+  <div *ngIf="allShippingFees?.length==0">
+    <div class="text-center noProjectsMessage">
+      <fa-icon [icon]="faFolderOpen"></fa-icon>
+      <h4>there is no Result to show yet .</h4>
+    </div>
+  
+  </div>
+  
+  
+  
+  
+  <div *ngIf="showloader" class="loader loaderMaster">
+    <div class="cssload-container">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div *ngIf="editBrandMode" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Shipping </h5>
+          <button (click)="closeEditDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body p0 text-left">
+          <!-- <pre>{{brandToEdit | json}}</pre> -->
+          <form [(formGroup)]="editShippingForm" (ngSubmit)="editShipping()">
+            <div class="form-group">
+  
+              <div class="d-flex">
+                <input type="text" class="form-control" formControlName="value" placeholder="value" />
+              </div>
+  
+              <span *ngIf="!editShippingForm.get('value').valid && editShippingForm.get('value').touched">value
+              </span>
+            </div>
+  
+           
+            <button [disabled]="!editShippingForm.valid" type="submit"
+              class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+              Save
+            </button>
+          </form>
+  
+          <!-- <pre>{{categoryToEditLast | json}}</pre> -->
+  
+          <h6 class="text-center mt-3" *ngIf="editSuccessLast">edit Successfilly</h6>
+          <h6 class="text-center mt-3" *ngIf="editFailLast">error in edit</h6>
+  
+  
+          <h6 *ngIf="editSuccess">edited successfully</h6>
+          <!-- <pre>{{projectToDelete | json}}</pre> -->
+  
+          <h6 *ngIf="editFail">error in edit</h6>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  

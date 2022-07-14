@@ -1,0 +1,122 @@
+<app-header></app-header>
+
+
+
+<div class="adverts">
+    <div class="container">
+        <!-- <h2 class="trends_title">Latest Products</h2>  -->
+        <div class="row">
+
+
+            
+
+            <div *ngFor="let product of allProducts" class="col-lg-4 advert_col">
+                
+                <!-- Advert Item -->
+
+                <div class="advert d-flex flex-row align-items-center justify-content-start">
+                    <div class="advert_content">
+                        <div class="advert_title"><a (click)="openProduct(product)" style="cursor: pointer;">{{product.name}}</a></div>
+                        <div class="advert_text">{{product.description}}</div>
+                        <div>{{product.price}} $</div>
+                    </div>
+                    <div class="ml-auto"><div class="advert_image">
+                        <img style="max-width: 100%;"  [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" >
+                    </div></div>
+                    
+                </div>
+            </div>
+
+         
+
+        </div>
+    </div>
+</div>
+
+
+<div class="best_sellers">
+    <div class="container">
+        <!-- <h2 class="trends_title">Top Rated Products</h2> -->
+        <div class="row">
+
+        
+            <div *ngFor="let product of allProducts" class="col-lg-4 advert_col">
+                
+                <!-- Advert Item -->
+
+                <div class="advert d-flex flex-row align-items-center justify-content-start">
+                    <div class="advert_content">
+                        <div class="advert_title"><a (click)="openProduct(product)" style="cursor: pointer;" >{{product.name}}</a></div>
+                        <div class="advert_text">{{product.description}}</div>
+                        <div>{{product.price}} $</div>
+                    </div>
+                    <div class="ml-auto"><div class="advert_image">
+                        <img style="max-width: 100%;"  [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" >
+                    </div></div>
+                    
+                </div>
+            </div>
+
+         
+
+
+        </div>
+    </div>
+</div>
+
+<div class="adverts">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="popular_categories_content">
+                    <div class="popular_categories_title">Popular Categories</div>
+                </div>
+            </div>
+
+            <div *ngFor="let childCat of childCatForMaster" class="col-lg-2 ">
+					
+                <div class="char_item d-flex flex-row align-items-center justify-content-start">
+                    <div class="char_content">
+                        <div class="char_title">{{childCat.name}}</div>
+                    </div>
+                </div>
+            </div>
+            
+
+
+         
+
+        </div>
+    </div>
+</div>
+
+
+<div class="best_sellers">
+    <div class="container">
+        <h2 class="trends_title">Flash Sale Products</h2>
+        <div class="row">
+
+        
+            <div *ngFor="let product of flashSaleProducts" class="col-lg-4 advert_col">
+                
+                <!-- Advert Item -->
+
+                <div class="advert d-flex flex-row align-items-center justify-content-start">
+                    <div class="advert_content">
+                        <div class="advert_title"><a (click)="openProduct(product)" style="cursor: pointer;">{{product.name}}</a></div>
+                        <div class="advert_text">{{product.description}}</div>
+                        <div>{{product.price}} $</div>
+                    </div>
+                    <div class="ml-auto"><div class="advert_image">
+                        <img style="max-width: 100%;"  [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" >
+                    </div></div>
+                    
+                </div>
+            </div>
+
+         
+
+
+        </div>
+    </div>
+</div>

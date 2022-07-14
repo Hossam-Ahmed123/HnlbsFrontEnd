@@ -1,0 +1,575 @@
+<app-after-login-header></app-after-login-header>
+<div class="mainContainer">
+
+  <div class="container">
+    <tabset class="horizontal-tabs lastStyletab transparent-tabs profileNewTabs" type="pills">
+      <tab>
+        <ng-template tabHeading>
+          <div class="d-flex align-items-center">
+            <div class="admin-icon">
+              <fa-icon class="" [icon]="faTruck"></fa-icon>
+            </div>
+            <div>
+              <h6 class="reg-font m-0">Shipping Info</h6>
+
+            </div>
+          </div>
+        </ng-template>
+
+
+        <div class="admin-profile-item-data">
+          <h6>
+            {{allUserData?.shipping?.shippingContury}}
+            {{allUserData?.shipping?.shippingCity}}
+            {{allUserData?.shipping?.shippingAddress}}
+          </h6>
+        </div>
+        <div>
+          <a *ngIf="allUserData?.shipping !=null" (click)="openEditShipping()" class="edit-profile-btn mt-2">
+            edit
+          </a>
+          <a *ngIf="allUserData?.shipping ==null" (click)="openAddSHipping()" class="edit-profile-btn mt-2">New</a>
+        </div>
+      </tab>
+      <tab>
+        <ng-template tabHeading>
+          <div class="d-flex align-items-center">
+            <div class="admin-icon">
+              <fa-icon class="" [icon]="faUserAlt"></fa-icon>
+            </div>
+            <div>
+              <h6 class="reg-font m-0">Account Settings</h6>
+
+            </div>
+          </div>
+        </ng-template>
+        <div class="admin-profile-item-data">
+
+
+          <div class="d-flex">
+            <h6 class="mr-2">Phone</h6>
+            <h6>{{allUserData?.phone}}</h6>
+          </div>
+          <div class="d-flex">
+            <h6 class="mr-2">Email</h6>
+            <h6>{{allUserData?.email}}</h6>
+          </div>
+          <div>
+            <a (click)="openEditProfile()" class="edit-profile-btn mt-2">edit</a>
+          </div>
+        </div>
+      </tab>
+      <tab>
+        <ng-template tabHeading>
+          <div class="d-flex align-items-center">
+            <div class="admin-icon">
+              <fa-icon class="" [icon]="faPercentage"></fa-icon>
+            </div>
+            <div>
+              <h6 class="reg-font m-0">Promo Codes</h6>
+
+            </div>
+          </div>
+        </ng-template>
+        <div class="admin-profile-item-data">
+
+
+
+          <div *ngFor="let promo of allPromoCodes" class="d-flex">
+            <h6 class="mr-2">{{promo?.promoName}}</h6>
+            <h6>{{promo?.discountValue}}</h6>
+
+          </div>
+
+        </div>
+      </tab>
+
+      <tab>
+        <ng-template tabHeading>
+          <div class="d-flex align-items-center">
+            <div class="admin-icon">
+              <fa-icon class="" [icon]="faList"></fa-icon>
+            </div>
+            <div>
+              <h6 class="reg-font m-0">My Orders</h6>
+
+            </div>
+          </div>
+        </ng-template>
+        <div class="admin-profile-item-data">
+
+
+          <div class="">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Order Key</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of myOrders">
+                  <td>{{order?.orderKey}} </td>
+                  <td>{{order?.createdAt | date}} </td>
+                  <td>{{order?.status}} </td>
+                  <td>
+                    <a style="cursor: pointer;" (click)="openDetailsDialog(order)">
+                      view products
+                    </a>
+
+                  </td>
+
+
+
+
+
+
+                </tr>
+
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </tab>
+
+    </tabset>
+  </div>
+  <div class="container">
+
+    <!-- <table class="table">
+      <thead>
+        <tr>
+          <th class="product-name">shipping Name</th>
+          <th class="product-name">shipping Type</th>
+
+          <th class="product-name">shipping Country</th>
+          <th class="product-name">shipping City</th>
+          <th class="product-name">shipping Address</th>
+          <th class="product-price"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{allUserData?.shipping?.shippingName}} </td>
+          <td>{{allUserData?.shipping?.shippingType}} </td>
+          <td>{{allUserData?.shipping?.shippingContury}} </td>
+          <td>{{allUserData?.shipping?.shippingCity}} </td>
+          <td>{{allUserData?.shipping?.shippingAddress}} </td>
+
+
+
+
+          <td class="product-price" data-title="Price">
+
+            <button (click)="openEditShipping()" type="button" style="margin-left: 10px;"
+              class="btn btn-warning insideTablebtn small-btn">
+              Edit
+            </button>
+          </td>
+
+        </tr>
+
+
+      </tbody>
+    </table> -->
+    <!-- <div class="row">
+
+
+      <div class="col-lg-4 col-md-4 col-12">
+        <div class="admin-block">
+          <div class="d-flex align-items-center">
+            <div class="admin-icon">
+              <fa-icon class="" [icon]="faTruck"></fa-icon>
+            </div>
+            <div>
+              <h6 class="reg-font m-0">Shipping Info</h6>
+
+            </div>
+          </div>
+          <div class="admin-profile-item-data">
+            <h6>
+            {{allUserData?.shipping?.shippingContury}}
+          {{allUserData?.shipping?.shippingCity}}
+          {{allUserData?.shipping?.shippingAddress}}
+            </h6>
+          </div>
+          <div class="text-center">
+            <a *ngIf="allUserData?.shipping !=null"  (click)="openEditShipping()" 
+            class="edit-profile-btn mt-2">
+            edit
+          </a>
+            <a *ngIf="allUserData?.shipping ==null" (click)="openAddSHipping()" class="edit-profile-btn mt-2">New</a>
+          </div>
+
+
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4 col-12">
+        <div class="admin-block">
+          <div class="d-flex align-items-center">
+            <div class="admin-icon">
+              <fa-icon class="" [icon]="faLocationArrow"></fa-icon>
+            </div>
+            <div>
+              <h6 class="reg-font m-0">Address Book</h6>
+
+            </div>
+          </div>
+
+          <div class="admin-profile-item-data">
+            <h6>{{allUserData?.address}}</h6>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="col-lg-4 col-md-4 col-12">
+        <div class="admin-block">
+          <div class="d-flex align-items-center">
+            <div class="admin-icon">
+              <fa-icon class="" [icon]="faUserAlt"></fa-icon>
+            </div>
+            <div>
+              <h6 class="reg-font m-0">Account Settings</h6>
+
+            </div>
+          </div>
+
+          <div class="admin-profile-item-data">
+
+
+            <div class="d-flex">
+              <h6 class="mr-2">Phone</h6>
+              <h6>{{allUserData?.phone}}</h6>
+            </div>
+            <div class="d-flex">
+              <h6 class="mr-2">Email</h6>
+              <h6>{{allUserData?.email}}</h6>
+            </div>
+            <div class="text-center">
+              <a (click)="openEditProfile()" class="edit-profile-btn mt-2">edit</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-12">
+        <div class="admin-block">
+          <div class="d-flex align-items-center">
+            <div class="admin-icon">
+              <fa-icon class="" [icon]="faPercentage"></fa-icon>
+            </div>
+            <div>
+              <h6 class="reg-font m-0">Promo Codes</h6>
+
+            </div>
+          </div>
+
+          <div class="admin-profile-item-data">
+
+ 
+          
+            <div *ngFor="let promo of allPromoCodes" class="d-flex">
+              <h6 class="mr-2">{{promo?.promoName}}</h6>
+              <h6>{{promo?.discountValue}}</h6>
+              
+            </div>
+       
+          </div>
+        </div>
+
+      </div>
+    </div> -->
+
+
+
+    <div *ngIf="addShippingMode">
+      <form [(formGroup)]="addShippingInfoForm" (ngSubmit)="addShipping()">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <input type="text" class="form-control" formControlName="shippingName" placeholder="shippingName" />
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <select (change)="logCountry()" class="form-control" formControlName="shippingContury">
+              <option *ngFor="let country of countriesList;let i=index" [value]="i">
+                {{country.country}}
+              </option>
+            </select>
+          </div>
+          <div class="col-lg-4 form-group col-md-4 col-sm-4 col-xs-12">
+            <select class="form-control" formControlName="shippingCity">
+              <option *ngFor="let city of filteredCities" [value]="city">
+                {{city}}
+              </option>
+            </select>
+          </div>
+
+
+        </div>
+
+
+
+        <div class="form-group">
+          <textarea type="text" class="form-control" formControlName="shippingAddress"
+            placeholder="shippingAddress"></textarea>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="text-center">
+          <div class="d-inline-block">
+            <button [disabled]="!addShippingInfoForm.valid" type="submit"
+              class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+              add
+            </button>
+          </div>
+        </div>
+
+
+
+      </form>
+    </div>
+
+
+  </div>
+</div>
+
+
+
+
+
+
+<div *ngIf="editMode" class="modal2 custom-modal custom-modal22 rating-dialog addProductDialog" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Shipping</h5>
+        <button (click)="closeEditShipping()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <form [(formGroup)]="editShippingInfoForm" (ngSubmit)="editShipping()">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+              <input type="text" class="form-control" formControlName="shippingName" placeholder="shippingName" />
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+              <select (change)="logCountryEdit()" class="form-control" formControlName="shippingContury">
+                <option *ngFor="let country of countriesList;let i=index" [value]="country.country">
+                  {{country.country}}
+                </option>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group col-md-4 col-sm-4 col-xs-12">
+              <select class="form-control" formControlName="shippingCity">
+                <option *ngFor="let city of filteredCities" [value]="city">
+                  {{city}}
+                </option>
+              </select>
+            </div>
+
+
+          </div>
+
+
+
+          <div class="form-group">
+            <textarea type="text" class="form-control" formControlName="shippingAddress"
+              placeholder="shippingAddress"></textarea>
+          </div>
+
+
+
+
+
+
+
+
+
+
+          <button [disabled]="!editShippingInfoForm.valid" type="submit"
+            class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+            save
+          </button>
+        </form>
+        <h6 *ngIf="editSuccess" class="text-center">edited successfully</h6>
+
+        <h6 *ngIf="editFail" class="text-center">error in edit</h6>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div *ngIf="detailsMode" class="modal2 custom-modal custom-modal22 rating-dialog addProductDialog" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Order Details</h5>
+        <button (click)="closeDetailsDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <h6 *ngIf="noProductDetails" class="text-center">
+          No Products
+        </h6>
+        <!-- <pre>{{selectedOrderDetailsObj | json}}</pre> -->
+        <table *ngIf="!noProductDetails" class="table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Product Image</th>
+              <th>Size</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>discount</th>
+              <th>add review</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of selectedOrderDetailsObj">
+              <td>{{order.product.name}} </td>
+              <td>
+                <img width="113" height="113" class="cart_item_image"
+                  [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + order.product.masterImage" alt="">
+
+              </td>
+              <td>{{order.size}} </td>
+              <td>{{order.product.price}} </td>
+              <td>{{order.quantity}} </td>
+              <td>{{order.totalPrice}} </td>
+              <td>{{order.discount}} </td>
+              <td><a style="cursor: pointer;" (click)="openReviewDialog(order)">
+                  review
+                </a>
+              </td>
+
+            </tr>
+
+
+          </tbody>
+        </table>
+
+
+        <div *ngIf="reviewMode">
+          <!-- <pre>{{productToReview | json}}</pre> -->
+
+          <form [(formGroup)]="addReviewForm" (ngSubmit)="addReview()">
+            <div>
+              <input type="text" class="form-control" formControlName="title" placeholder="title" />
+            </div>
+   
+            <div>
+              <ngb-rating max="5" formControlName="rating" >
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+            </div>
+           
+              <div>
+                <input type="text" class="form-control" formControlName="content" placeholder="content" />
+              </div>
+     
+              <div class="form-group">
+                <!-- <h6>Product Image</h6> -->
+  
+                <div>
+  
+                  <div>
+                    <input  #myInptMaster class="form-control" type="file" id="formFile" accept="image/*"
+                      (change)="onChange($event)" />
+                    <input multiple type="text" hidden name="attach" class="form-control">
+  
+                  </div>
+                </div>
+  
+  
+  
+              </div>
+    
+    
+              
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+            <div class="text-center">
+              <div class="d-inline-block">
+                <button  type="submit"
+                  class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+                  add
+                </button>
+              </div>
+            </div>
+    
+    
+    
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div *ngIf="reviewMode" class="modal2 custom-modal custom-modal22 rating-dialog addProductDialog" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Product Review</h5>
+        <button (click)="closeReviewDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+
+        {{productToReview | json}}
+
+      </div>
+    </div>
+  </div>
+</div> -->
+<!-- reviewMode -->
+<div *ngIf="showLoader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

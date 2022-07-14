@@ -1,0 +1,338 @@
+<!-- <button (click)="updateCategory()" type="button">update child</button> -->
+<div>
+  <button (click)="openAddCategoryDialog()" type="button"
+    class="btn btn-success nobg-btn auto-width-btn normal-padding custom-auto-btn mb-3">
+    <span style="padding-left: 5px;">+</span>
+    New
+  </button>
+</div>
+
+
+<div class="row">
+  <div class="col-lg-6 mb-20">
+    <table *ngIf="allCategories?.length>0" class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">name</th>
+          <th scope="col">Cover Photo</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Category of allCategories">
+          <td>{{Category.name}}</td>
+          <td *ngIf="Category.coverPhoto==null">
+            <fa-icon [icon]="faImage"></fa-icon>
+          </td>
+          <td *ngIf="Category.coverPhoto!=null">
+            <img style="width: 50px;" [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + Category.coverPhoto" />
+          </td>
+
+          <td>
+            <button type="button" (click)="openEditDialog(Category)" class="btn btn-warning insideTablebtn small-btn">
+              <fa-icon [icon]="faEdit"></fa-icon>
+              edit cover photo
+            </button>
+          </td>
+          <!-- <td>
+          <button type="button" (click)="openDeleteProductDialog(product)"
+            class="btn btn-danger insideTablebtn small-btn">
+            <fa-icon [icon]="faTrashAlt"></fa-icon>
+            delete
+          </button>
+        </td> -->
+        </tr>
+
+      </tbody>
+    </table>
+    <div *ngIf="allCategories?.length==0">
+      <div class="text-center noProjectsMessage">
+        <fa-icon [icon]="faFolderOpen"></fa-icon>
+        <h4>there is no Result to show yet .</h4>
+      </div>
+
+    </div>
+
+
+
+
+
+
+    <div class="form-group d-flex m-t10">
+      <div>
+        <select class="form-control"  [(ngModel)]="selectedMasterCategory">
+          <option value="-1" disabled>select Category</option>
+          <option [value]="i" *ngFor="let Category of allCategories;let i = index">{{Category?.name}}
+          </option>
+        </select>
+      </div>
+
+
+      <button (click)="getChildCategories()" type="button"
+        class="btn btn-success nobg-btn auto-width-btn normal-padding custom-auto-width-btn ml-10">
+        get Child Categories
+      </button>
+
+
+    </div>
+
+<!-- <pre>{{filteredChildCategories | json}}</pre> -->
+    <table *ngIf="filteredChildCategories?.length>0" class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">name</th>
+          <th scope="col">Image</th>
+          <th scope="col">sKUCode</th>
+          
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Category of filteredChildCategories">
+          <td>{{Category.name}}</td>
+          
+          <td>
+            <img style="max-width: 100%;width: 50px;"
+              [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + Category.coverPhoto">
+          </td>
+          <td>{{Category.sKUCode}}</td>
+          
+          <td>
+            <button type="button" (click)="openEditLastDialog(Category)"
+              class="btn btn-warning insideTablebtn small-btn">
+              <fa-icon [icon]="faEdit"></fa-icon>
+              edit
+            </button>
+          </td>
+          <td>
+            <button type="button" (click)="openDeleteDialog(Category)"
+              class="btn btn-danger insideTablebtn small-btn">
+              <fa-icon [icon]="faTrashAlt"></fa-icon>
+              delete
+            </button>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+    <div *ngIf="filteredChildCategories?.length==0">
+      <div class="text-center noProjectsMessage">
+        <fa-icon [icon]="faFolderOpen"></fa-icon>
+        <h4>there is no Result to show yet .</h4>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="clearfix"></div>
+
+
+
+
+<div *ngIf="showloader"  class="loader loaderMaster">
+  <div class="cssload-container">
+      <div class="lds-ripple"><div></div><div></div></div>
+  </div>
+</div>
+
+
+<div *ngIf="editCategoryMode" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Cover Photo</h5>
+        <button (click)="closeEditDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <!-- <pre>{{categoryToEdit | json}}</pre> -->
+        <form [(formGroup)]="editCoverForm" (ngSubmit)="editCover()">
+          <div class="form-group">
+            <h6>Category Cover Photo</h6>
+
+            <div>
+
+              <div>
+                <input class="form-control" type="file" id="formFile" accept="image/*" (change)="onChange($event)" />
+                <input type="text" hidden name="attach" class="form-control">
+
+              </div>
+            </div>
+
+
+
+          </div>
+          <div class="d-flex justify-content-center">
+            <button (click)="editCover()" type="submit" style="margin-left: 10px;"
+              class="btn btn-danger insideTablebtn small-btn">
+              Save Cover Photo
+            </button>
+
+
+          </div>
+
+        </form>
+
+        <h6 *ngIf="editSuccess">edited successfully</h6>
+        <!-- <pre>{{projectToDelete | json}}</pre> -->
+
+        <h6 *ngIf="editFail">error in edit</h6>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div *ngIf="addCategoryMode" class="modal2 custom-modal custom-modal22 rating-dialog addProductDialog" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Child Category</h5>
+        <button (click)="closeAddCategoryDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+
+
+        <form [(formGroup)]="addCategoryForm" (ngSubmit)="addCategory()">
+          <div class="form-group">
+            <h6>Select Main Category Name</h6>
+            <select class="form-control" formControlName="parentCategoryId">
+              <option value="0" disabled>select Category</option>
+              <option [value]="Category.categoryId" *ngFor="let Category of allCategories">{{Category?.name}}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="name" placeholder="Sub Category Name" />
+            </div>
+
+            <span *ngIf="!addCategoryForm.get('name').valid && addCategoryForm.get('name').touched">Sub Category
+              Name</span>
+          </div>
+
+          <div class="form-group">
+
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="sKUCode" placeholder="sKUCode" />
+            </div>
+          </div>
+          <div class="form-group">
+            <h6>Category Image</h6>
+            <input  class="form-control" type="file" id="formFile222" accept="image/*"
+              (change)="onChange2($event)" />
+            <input  type="text" hidden name="attach" class="form-control">
+
+          </div>
+          <h6 *ngIf="addSuccess" class="text-success text-center">Sub Category Added Successfully</h6>
+          <h6 *ngIf="addFail" class="text-danger text-center">error in Add Sub Category</h6>
+          <button [disabled]="!addCategoryForm.valid" type="submit"
+            class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+            add Sub Category
+          </button>
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div *ngIf="deleteCategoryModeLast" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Child Category</h5>
+        <button (click)="clodeDeleteDialog()" type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <h6>are you sure that you want to Child Category</h6>
+        <div class="d-flex justify-content-center">
+          <button (click)="deleteCategory()" type="button" style="margin-left: 10px;"
+          class="btn btn-danger insideTablebtn small-btn">
+          delete
+        </button>
+          <button (click)="clodeDeleteDialog()" style="margin-left: 10px;" type="button"
+            class="btn btn-success insideTablebtn small-btn">
+            <!-- <fa-icon class="ml5" [icon]="faCheck"></fa-icon> -->
+            cancel
+
+          </button>
+     
+ 
+        </div>
+        <!-- <pre>{{projectToDelete | json}}</pre> -->
+
+        <h6 *ngIf="deleteFailLast">error in delete</h6>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="editCategoryModeLast" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Child Category</h5>
+        <button (click)="clodeEditLastDialog()" type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+
+
+        <form [(formGroup)]="editChildCategoryForm" (ngSubmit)="editChildCategoty()">
+          <div class="form-group">
+
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="name" placeholder="Sub Category Name" />
+            </div>
+
+            <span *ngIf="!editChildCategoryForm.get('name').valid && editChildCategoryForm.get('name').touched">Sub Category
+              Name</span>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" formControlName="sKUCode" placeholder="sKUCode" />
+
+          </div>
+          <div class="form-group">
+            <h6>Category Image</h6>
+            <input  class="form-control" type="file" id="formFile222" accept="image/*"
+              (change)="onChange3($event)" />
+            <input  type="text" hidden name="attach" class="form-control">
+
+          </div>
+          <button [disabled]="!editChildCategoryForm.valid" type="submit"
+          class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+          Save
+        </button>
+        </form>
+
+        <!-- <pre>{{categoryToEditLast | json}}</pre> -->
+
+        <h6 class="text-center mt-3" *ngIf="editSuccessLast">edit Successfilly</h6>
+        <h6 class="text-center mt-3" *ngIf="editFailLast">error in edit</h6>
+
+      </div>
+    </div>
+  </div>
+</div>

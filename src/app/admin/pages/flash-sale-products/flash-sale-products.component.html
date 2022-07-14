@@ -1,0 +1,251 @@
+<h6>Add product to Flash Sale</h6>
+<table *ngIf="allProducts?.length>0" class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">name</th>
+      <th scope="col">price</th>
+      <th scope="col">discount</th>
+
+      <th scope="col">sku</th>
+      <th scope="col">Image</th>
+      <th scope="col">addedOn</th>
+
+      <th scope="col"></th>
+      <!-- <th scope="col"></th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of allProducts">
+      <td>{{product.name}}</td>
+      <td>{{product.price}}</td>
+      <td>{{product.discount}}</td>
+      <td>{{product.sku}}</td>
+      <td *ngIf="product.masterImage==null">
+        <fa-icon [icon]="faImage"></fa-icon>
+      </td>
+      <td *ngIf="product.masterImage!=null">
+        <img style="width: 50px;" [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" />
+      </td>
+      <td>{{product.addedOn | date}}</td>
+
+      <td class="text-danger" *ngIf="product.discount ==0">
+
+      </td>
+
+      <td *ngIf="product.discount !=0">
+        <button type="button" (click)="openFlashSalseDialog(product)" class="btn btn-success insideTablebtn small-btn">
+          add to flash sale
+        </button>
+      </td>
+
+      <!-- 
+        <td>
+          <button type="button" (click)="openEditFlashDialog(flashSale)" class="btn btn-warning insideTablebtn small-btn">
+            <fa-icon [icon]="faEdit"></fa-icon>
+            edit 
+          </button>
+        </td>
+        <td>
+            <button type="button" (click)="openDeleteDialog(flashSale)"
+              class="btn btn-danger insideTablebtn small-btn">
+              <fa-icon [icon]="faTrashAlt"></fa-icon>
+              delete
+            </button>
+          </td> -->
+
+    </tr>
+
+  </tbody>
+</table>
+<div *ngIf="allProducts?.length==0">
+
+  <div class="text-center noProjectsMessage">
+    <fa-icon [icon]="faFolderOpen"></fa-icon>
+    <h4>there is no Products to show yet .</h4>
+  </div>
+
+</div>
+
+<div class="flashSaleContainer">
+  <h6>Flash Sale products</h6>
+  <div class="d-flex mb-20">
+
+    <select class="form-control maxW300" [(ngModel)]="selectedFlashSale2">
+      <option value="0" disabled>select Flash Sale</option>
+      <option [value]="FlashSale.id" *ngFor="let FlashSale of allFlashSales">{{FlashSale?.name}}
+      </option>
+    </select>
+    <button type="button" (click)="getFlashSaleProducts()" class="btn btn-success insideTablebtn master-btn">
+      get products
+    </button>
+
+
+
+  </div>
+
+
+  <table *ngIf="allFlashSaleProducts?.length>0" class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">name</th>
+        <th scope="col">price</th>
+        <th scope="col">discount</th>
+  
+        <th scope="col">sku</th>
+        <th scope="col">Image</th>
+        <th scope="col">addedOn</th>
+  
+        <th scope="col"></th>
+        <!-- <th scope="col"></th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of allFlashSaleProducts">
+        <td>{{product.name}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.discount}}</td>
+        <td>{{product.sku}}</td>
+        <td *ngIf="product.masterImage==null">
+          <fa-icon [icon]="faImage"></fa-icon>
+        </td>
+        <td *ngIf="product.masterImage!=null">
+          <img style="width: 50px;" [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" />
+        </td>
+        <td>{{product.addedOn | date}}</td>
+  
+        <td class="text-danger" *ngIf="product.discount ==0">
+  
+        </td>
+  
+        <td *ngIf="product.discount !=0">
+          <button type="button" (click)="openRemoveFlashSalseDialog(product)" class="btn btn-danger insideTablebtn small-btn">
+            remove from flash sale
+          </button>
+        </td>
+  
+        <!-- 
+          <td>
+            <button type="button" (click)="openEditFlashDialog(flashSale)" class="btn btn-warning insideTablebtn small-btn">
+              <fa-icon [icon]="faEdit"></fa-icon>
+              edit 
+            </button>
+          </td>
+          <td>
+              <button type="button" (click)="openDeleteDialog(flashSale)"
+                class="btn btn-danger insideTablebtn small-btn">
+                <fa-icon [icon]="faTrashAlt"></fa-icon>
+                delete
+              </button>
+            </td> -->
+  
+      </tr>
+  
+    </tbody>
+  </table>
+  <div *ngIf="allFlashSaleProducts?.length==0">
+  
+    <div class="text-center noProjectsMessage">
+      <fa-icon [icon]="faFolderOpen"></fa-icon>
+      <h4>there is no Products within the flash sale to show yet .</h4>
+    </div>
+  
+  </div>
+
+
+</div>
+
+
+
+
+
+<div *ngIf="flashMode" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Product To Flash Sale</h5>
+        <button (click)="closeFlashSalseDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <div class="d-flex justify-content-center">
+
+          <select class="form-control" [(ngModel)]="selectedFlashSale">
+            <option value="0" disabled>select Flash Sale</option>
+            <option [value]="FlashSale.id" *ngFor="let FlashSale of allFlashSales">{{FlashSale?.name}}
+            </option>
+          </select>
+          <button type="button" (click)="AddToFlashSale()" class="btn btn-success insideTablebtn small-btn">
+            add
+          </button>
+
+
+
+        </div>
+        <!-- <pre>{{productToAdd | json}}</pre> -->
+
+        <h6 *ngIf="addproductSuccess">Product Added To Flash Sale</h6>
+        <h6 *ngIf="addproductFail">Error In Adding Product To Flash Sale</h6>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div *ngIf="removeFlashMode" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Remove Product from Flash Sale</h5>
+        <button (click)="closeRemoveFlashSalseDialog()" type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <div class="justify-content-center">
+
+          <h6>are you sure that you want to Remove product</h6>
+          <div class="d-flex justify-content-center">
+            <button (click)="removeFromFlashSale()" type="button" style="margin-left: 10px;"
+              class="btn btn-danger insideTablebtn small-btn">
+              delete
+            </button>
+            <button (click)="closeRemoveFlashSalseDialog()" style="margin-left: 10px;" type="button"
+              class="btn btn-success insideTablebtn small-btn">
+              <!-- <fa-icon class="ml5" [icon]="faCheck"></fa-icon> -->
+              cancel
+
+            </button>
+
+
+          </div>
+
+
+
+        </div>
+        <!-- <pre>{{productToRemove | json}}</pre> -->
+
+        <h6 *ngIf="removePoductSuccess">Product removed From Flash Sale</h6>
+        <h6 *ngIf="removePoductFail">Error In removing Product from Flash Sale</h6>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div *ngIf="showloader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

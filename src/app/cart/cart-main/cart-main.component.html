@@ -1,0 +1,430 @@
+<app-header *ngIf="!showLoggedData"></app-header>
+<app-after-login-header *ngIf="showLoggedData"></app-after-login-header>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb innerCrumb">
+    <li class="breadcrumb-item"><a routerLink="">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+  </ol>
+</nav>
+<!-- <div class="container">
+  <div class="row">
+    <div class="col-lg-10 offset-lg-1">
+      <div class="cart_container">
+        <div class="cart_title">Shopping Cart</div>
+        <div class="cart_items">
+          <ul class="cart_list">
+            <li *ngFor="let cartItem of allCartItems" class="cart_item clearfix">
+              <img class="cart_item_image"
+                [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + cartItem.product.masterImage" alt="">
+              <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
+                <div class="cart_item_name cart_info_col">
+                  <div class="cart_item_title">Name</div>
+                  <div class="cart_item_text">{{cartItem.product.name}}</div>
+                </div>
+
+                <div class="cart_item_quantity cart_info_col">
+                  <div class="cart_item_title">Quantity</div>
+                  <div class="cart_item_text">1</div>
+                </div>
+                <div class="cart_item_price cart_info_col">
+                  <div class="cart_item_title">Price</div>
+                  <div class="cart_item_text">{{cartItem.product.price}} $</div>
+                </div>
+                <div class="cart_item_total cart_info_col">
+                  <div class="cart_item_title">Total</div>
+                  <div class="cart_item_text">$2000</div>
+                </div>
+
+                <div class="cart_item_total cart_info_col">
+                  <div class="cart_item_title">remove</div>
+                  <div class="cart_item_text">
+                    <button (click)="deleteProductFromCartOnline(cartItem)" type="button" style="margin-left: 10px;"
+                      class="btn btn-danger insideTablebtn small-btn">
+                      remove from cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="order_total">
+          <div class="order_total_content text-md-right">
+            <div class="order_total_title">Order Total:</div>
+            <div class="order_total_amount">$2000</div>
+          </div>
+        </div>
+
+        <div class="cart_buttons">
+          <button type="button" class="button cart_button_clear">Add to Cart</button>
+          <button type="button" class="button cart_button_checkout">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+<div *ngIf="showBeforeRedirect">
+<!-- <pre>{{allCartItems | json}}</pre> -->
+
+<!-- <ul class="c-bag-qty">
+  <li class="qty-opt left">
+    <span class="suiiconfont sui_icon_min_16px">
+      <button [disabled]="selectedQuantity<2" class="incrementBtn" (click)="decreaseQuantity()">
+        -
+      </button>
+
+    </span>
+
+  </li>
+  <li>
+    <input type="text" [(ngModel)]="selectedQuantity" class="qty-num" />
+
+  </li>
+  <li class="qty-opt right">
+    <span class="suiiconfont sui_icon_plus_16px">
+      <button class="incrementBtn" (click)="increaseQuantity()">
+        +
+      </button>
+  
+
+    </span>
+
+  </li>
+</ul> -->
+<div *ngIf="!showOfflineCart" class="shopping-cart-container container">
+  <div *ngIf="allCartItems?.length>0" class="row">
+      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+          <h3 class="box-title">Your cart items</h3>
+          <form class="shopping-cart-form" action="#" method="post">
+              <table class="shop_table cart-form">
+                  <thead>
+                  <tr>
+                      <th class="product-name">Product Name</th>
+                      <th class="product-img">Product Image</th>
+                      <th class="product-price">Size</th>
+                      <th class="product-price">Price</th>
+                      <th class="product-price quan-it">Quantity</th>
+                      <th class="product-price">Total</th>
+                      <th class="product-price">discount</th>
+                      <th class="product-price"></th>
+                      <!-- <th class="product-quantity">Quantity</th>
+                      <th class="product-subtotal">Total</th> -->
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let cartItem of allCartItems" class="cart_item">
+                      <td class="product-thumbnail">
+   
+                        <a class="prd-name" href="#">{{cartItem.product.name}}</a>   
+                    
+                    
+                      </td> 
+                      <td class="product-thumbnail center">
+                     
+                        <figure>
+                          <!-- <img width="113" height="113" src="assets/images/shippingcart/pr-01.jpg" alt="shipping cart"> -->
+                          <img width="113" height="113" class="cart_item_image"
+                          [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + cartItem.product.masterImage" alt="">
+                        </figure>
+             
+                        </td>
+                        <td class="product-price" data-title="Price">
+                          <div class="price price-contain">
+                              <ins><span class="price-amount"><span class="currencySymbol"></span>{{cartItem.size}}</span></ins>
+                              <!-- <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del> -->
+                          </div>
+                      </td>
+                      <td class="product-price" data-title="Price">
+                          <div class="price price-contain">
+                              <ins><span class="price-amount"><span class="currencySymbol">$</span>{{cartItem.product.price}}</span></ins>
+                              <!-- <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del> -->
+                          </div>
+                      </td>
+                      <td class="product-price quan-it" data-title="Price">
+                        <div class="price price-contain">
+                            <ins><span class="price-amount">
+                              <ul class="c-bag-qty">
+                                <li class="qty-opt left">
+                                  <span class="suiiconfont sui_icon_min_16px">
+                                    <button [disabled]="cartItem.quantity<2" class="incrementBtn" (click)="decreaseQuantity(cartItem)">
+                                      -
+                                    </button>
+                              
+                                  </span>
+                              
+                                </li>
+                                <li>
+                                  <input [value]="cartItem.quantity" type="text"   class="qty-num" />
+                              
+                                </li>
+                                <li class="qty-opt right">
+                                  <span class="suiiconfont sui_icon_plus_16px">
+                                    <button class="incrementBtn" (click)="increaseQuantity(cartItem)">
+                                      +
+                                    </button>
+                                
+                              
+                                  </span>
+                              
+                                </li>
+                              </ul>
+                            </span></ins>
+                            <!-- <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del> -->
+                        </div>
+                    </td>
+                    <td class="product-price" data-title="Price">
+                      <div class="price price-contain">
+                          <ins>
+                            <span class="price-amount">
+                            {{(cartItem.quantity * cartItem.product.price)}}
+                          </span>
+                        </ins>
+                          <!-- <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del> -->
+                      </div>
+                  </td>
+                  <td class="product-price" data-title="Price">
+                    <div class="price price-contain">
+                        <ins><span class="price-amount">{{cartItem.product.discount}}</span></ins>
+                        <!-- <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del> -->
+                    </div>
+                </td>
+                
+                      <td class="product-price" data-title="Price">
+                        <a  style="cursor: pointer;    color: #0055d2;" (click)="deleteProductFromCartOnline(cartItem)">
+                          <fa-icon class="custom-fa" [icon]="faHeart"></fa-icon></a>
+ 
+                        </td>
+                  
+                      <!-- <td class="product-quantity" data-title="Quantity">
+                          <div class="quantity-box type1">
+                              <div class="qty-input">
+                                  <input type="text" name="qty12554" value="1" data-max_value="20" data-min_value="1" data-step="1">
+                                  <a href="#" class="qty-btn btn-up"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                  <a href="#" class="qty-btn btn-down"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                              </div>
+                          </div>
+                      </td> -->
+                      <!-- <td class="product-subtotal" data-title="Total">
+                          <div class="price price-contain">
+                              <ins><span class="price-amount"><span class="currencySymbol">£</span>85.00</span></ins>
+                              <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>
+                          </div>
+                      </td> -->
+                  </tr>
+                
+             
+                  </tbody>
+              </table>
+          </form>
+      </div>
+      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+          <div class="shpcart-subtotal-block">
+              <div class="subtotal-line">
+                  <b class="stt-name">Subtotal <span class="sub">({{allCartItems?.length}} items)</span></b>
+                  <span class="stt-price">{{(allCartCostOnline).toFixed(2)}} $</span>
+              </div>
+              <!-- <div class="subtotal-line">
+                  <b class="stt-name">Shipping</b>
+                  <span class="stt-price">£0.00</span>
+              </div>
+              <div class="tax-fee">
+                  <p class="title">Est. Taxes &amp; Fees</p>
+                  <p class="desc">Based on 56789</p>
+              </div> -->
+              <div class="btn-checkout">
+                  <a routerLink="/orderComplete" class="btn checkout">Check out</a>
+              </div>
+              <!-- <div class="biolife-progress-bar">
+                  <table>
+                      <tbody><tr>
+                          <td class="first-position">
+                              <span class="index">$0</span>
+                          </td>
+                          <td class="mid-position">
+                              <div class="progress">
+                                  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                          </td>
+                          <td class="last-position">
+                              <span class="index">$99</span>
+                          </td>
+                      </tr>
+                  </tbody></table>
+              </div> -->
+              <!-- <p class="pickup-info"><b>Free Pickup</b> is available as soon as today More about shipping and pickup</p> -->
+          </div>
+      </div>
+  </div>
+
+  <div *ngIf="allCartItems?.length==0">
+    <div class="p50 text-center">
+      <h1>
+        Your Shopping Cart Is Empty
+      </h1>
+     
+    </div>
+  </div>
+</div>
+
+<!-- <pre>{{allOfflineCartItems| json}}</pre> -->
+<div *ngIf="showOfflineCart" class="shopping-cart-container container">
+  <div *ngIf="allOfflineCartItems?.length>0" class="row">
+      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+          <h3 class="box-title">Your cart items</h3>
+          <form class="shopping-cart-form" action="#" method="post">
+              <table class="shop_table cart-form">
+                  <thead>
+                  <tr>
+                    <th class="product-name">Product Name</th>
+                    <th class="product-img">Product Image</th>
+                    <th class="product-price">Size</th>
+                    <th class="product-price">Price</th>
+                    <th class="product-price">Quantity</th>
+                    <th class="product-price">Total</th>
+                    <th class="product-price">Remove</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let cartItem of allOfflineCartItems" class="cart_item">
+                      <td class="product-thumbnail">
+   
+                        <a class="prd-name" href="#">{{cartItem.name}}</a>   
+                    
+                    
+                      </td> 
+                      <td class="product-thumbnail center">
+                     
+                        <figure>
+                          <!-- <img width="113" height="113" src="assets/images/shippingcart/pr-01.jpg" alt="shipping cart"> -->
+                          <img width="113" height="113" class="cart_item_image"
+                          [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + cartItem.image" alt="">
+                        </figure>
+             
+                        </td>
+                        <td class="product-price" data-title="Price">
+                          <div class="price price-contain">
+                              <ins><span class="price-amount"><span class="currencySymbol"></span>{{cartItem.size}}</span></ins>
+                              <!-- <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del> -->
+                          </div>
+                      </td>
+                        
+                      <td class="product-price" data-title="Price">
+                          <div class="price price-contain">
+                              <ins><span class="price-amount"><span class="currencySymbol">$</span>{{cartItem.price}}</span></ins>
+                              <!-- <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del> -->
+                          </div>
+                      </td>
+                      <td class="product-price" data-title="Price">
+                        <div class="price price-contain">
+                            <ins><span class="price-amount"><span class="currencySymbol"></span>{{cartItem.quantity}}</span></ins>
+                            <!-- <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del> -->
+                        </div>
+                    </td>
+                    <td class="product-price" data-title="Price">
+                      <div class="price price-contain">
+                          <ins>
+                            <span class="price-amount">
+                            {{(cartItem.quantity * cartItem.price)}}
+                          </span>
+                        </ins>
+                      </div>
+                  </td>
+                      <td class="product-price" data-title="Price">
+                              
+                      <button (click)="removeProductFromCartOffline(cartItem)" type="button" style="margin-left: 10px;"
+                      class="btn btn-danger insideTablebtn small-btn">
+                      remove 
+                    </button>
+                        </td>
+                  
+                      <!-- <td class="product-quantity" data-title="Quantity">
+                          <div class="quantity-box type1">
+                              <div class="qty-input">
+                                  <input type="text" name="qty12554" value="1" data-max_value="20" data-min_value="1" data-step="1">
+                                  <a href="#" class="qty-btn btn-up"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                  <a href="#" class="qty-btn btn-down"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                              </div>
+                          </div>
+                      </td> -->
+                      <!-- <td class="product-subtotal" data-title="Total">
+                          <div class="price price-contain">
+                              <ins><span class="price-amount"><span class="currencySymbol">£</span>85.00</span></ins>
+                              <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>
+                          </div>
+                      </td> -->
+                  </tr>
+                
+             
+                  </tbody>
+              </table>
+          </form>
+      </div>
+      <div *ngIf="showOfflineCart" class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+          <div class="shpcart-subtotal-block">
+              <div class="subtotal-line">
+                  <b class="stt-name">Subtotal <span class="sub">({{allOfflineCartItems?.length}} items)</span></b>
+                  <span class="stt-price">{{allCartCostOffline}} $</span>
+              </div>
+              <!-- <div class="subtotal-line">
+                  <b class="stt-name">Shipping</b>
+                  <span class="stt-price">£0.00</span>
+              </div> -->
+              <!-- <div class="tax-fee">
+                  <p class="title">Est. Taxes &amp; Fees</p>
+                  <p class="desc">Based on 56789</p>
+              </div> -->
+              <div class="btn-checkout">
+                  <a routerLink="/clientRegister" class="btn checkout">Check out</a>
+              </div>
+              <!-- <div class="biolife-progress-bar">
+                  <table>
+                      <tbody><tr>
+                          <td class="first-position">
+                              <span class="index">$0</span>
+                          </td>
+                          <td class="mid-position">
+                              <div class="progress">
+                                  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                          </td>
+                          <td class="last-position">
+                              <span class="index">$99</span>
+                          </td>
+                      </tr>
+                  </tbody></table>
+              </div> -->
+              <!-- <p class="pickup-info"><b>Free Pickup</b> is available as soon as today More about shipping and pickup</p> -->
+          </div>
+      </div>
+  </div>
+
+  <div *ngIf="allOfflineCartItems?.length==0">
+    <div class="p50 text-center">
+      <h1>
+        Your Shopping Cart Is Empty
+      </h1>
+     
+    </div>
+  </div>
+</div>
+</div>
+<div *ngIf="!showBeforeRedirect">
+  <div class="p50 text-center">
+    <h4>
+      You will redirect to payment gateway in seconds ....
+    </h4>
+   
+  </div>
+</div>
+<div *ngIf="showLoader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

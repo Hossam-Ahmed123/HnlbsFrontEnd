@@ -1,0 +1,108 @@
+<footer class="footer">
+  <div class="virtualContainer">
+    <div class="row">
+      <div class="col-lg-2">
+        <div class="footer_column">
+          <div class="footer_title">Company INFO</div>
+          <ul class="footer_list">
+            <li><a routerLink="/about" style="cursor: pointer;">About HNLBS</a></li>
+
+          </ul>
+
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="footer_column">
+          <div class="footer_title">Help and Support</div>
+          <ul class="footer_list">
+            <li><a routerLink="/returns" style="cursor: pointer;">Returns</a></li>
+            <li><a routerLink="/howToTrack" style="cursor: pointer;">How To Track</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+
+        </div>
+      </div>
+      <div class="col-lg-2"></div>
+      <div class="col-lg-6">
+        <div class="footer_column">
+          <div class="footer_title">Find Us On</div>
+          <div class="footer_social">
+            <ul>
+              <li>
+                <a href="https://www.facebook.com/Hnlbs.store/" target="_blank">
+                  <fa-icon [icon]="faFacebookF"></fa-icon>
+                </a>
+              </li>
+              <li>
+                <a href="https://instagram.com/hnlbsstore?igshid=YmMyMTA2M2Y=" target="_blank">
+                  <fa-icon [icon]="faInstagram"></fa-icon>
+                </a>
+              </li>
+
+            </ul>
+          </div>
+
+
+          <div class="footer_title mt-3 mb-2">Sign up for HNLBS offers</div>
+          <div class="">
+
+            <div class="newsletter_content clearfix">
+              <form [formGroup]="subscriptionForm" (ngSubmit)="subscribe()" class="newsletter_form">
+                <input type="email" formControlName="email"  class="newsletter_input" placeholder="Enter your email address">
+                <button [disabled]="!subscriptionForm.valid" type="submit" class="newsletter_button">Subscribe</button>
+ 
+              </form>
+
+            </div>
+          </div>
+          <h6 *ngIf="submitSuccess" class="mt-2">successfully subscriped</h6>
+          <h6 *ngIf="submitFail" class="mt-2">error in subscription</h6>
+          <div class="footer_title mt-3 mb-2">We Accept</div>
+          <div class="d-flex payOptions">
+
+            <img src="../../../assets/images/pay1.png" />
+            <img src="../../../assets/images/pay2.png" />
+            <img src="../../../assets/images/pay3.png" />
+            <img src="../../../assets/images/pay4.png" />
+
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+    </div>
+  </div>
+</footer>
+
+<div class="copyright">
+  <div class="virtualContainer">
+    <div class="row">
+      <div class="col">
+
+        <div class="copyright_container d-flex flex-sm-row flex-column align-items-center justify-content-start">
+          <div class="copyright_content">
+            Copyright ©
+
+            2022 All rights reserved | <i class="fa fa-heart" aria-hidden="true"></i> by <a href="#"
+              target="_blank">HNLBS</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showLoader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

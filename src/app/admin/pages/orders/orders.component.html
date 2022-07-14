@@ -1,0 +1,136 @@
+<table *ngIf="allOrders?.length>0" class="table">
+    <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Order Key</th>
+          <th scope="col">Date</th>
+          <th scope="col">Status</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let order of allOrders">
+            <td>{{order?.orderKey}} </td> 
+            <td>{{order?.createdAt | date}} </td> 
+            <td>{{order?.status}} </td> 
+            <td>
+              <a style="cursor: pointer;" (click)="openDetailsDialog(order)">
+                view products
+              </a>
+             
+            </td> 
+        
+
+
+  
+    
+            
+        </tr>
+      
+   
+        </tbody>
+    </table>
+  </table>
+  
+  
+  <div *ngIf="allOrders?.length==0">
+    <div class="text-center noProjectsMessage">
+      <fa-icon [icon]="faFolderOpen"></fa-icon>
+      <h4>there is no Result to show yet .</h4>
+    </div>
+  
+  </div>
+
+  <div *ngIf="showloader" class="loader loaderMaster">
+    <div class="cssload-container">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="detailsMode" class="modal2 custom-modal custom-modal22 rating-dialog addProductDialog" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Order Details</h5>
+          <button (click)="closeDetailsDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body p0 text-left">
+          <h6 *ngIf="noProductDetails" class="text-center">
+            No Products
+          </h6>
+          <!-- <pre>{{selectedOrderDetailsObj | json}}</pre> -->
+          <table *ngIf="!noProductDetails" class="table">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Product Image</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>discount</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of selectedOrderDetailsObj">
+                <td>{{order.product.name}} </td>
+                <td>
+                  <img width="113" height="113" class="cart_item_image"
+                    [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + order.product.masterImage" alt="">
+  
+                </td>
+                <td>{{order.size}} </td>
+                <td>{{order.product.price}} </td>
+                <td>{{order.quantity}} </td>
+                <td>{{order.totalPrice}} </td>
+                <td>{{order.discount}} </td>
+                <td>
+                  <a style="cursor: pointer;" (click)="getOrderPerson()">
+                    view order Person
+                  </a>
+                 
+                </td> 
+              </tr>
+  
+  
+            </tbody>
+          </table>
+  
+          <div *ngIf="showPersonRow">
+            <!-- {{orderPerson}} -->
+
+
+            <table  class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>phone</th>
+                  <th>email</th>
+                  <th>shipping address</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{orderPerson.name}} </td>
+                  <td>{{orderPerson.phone}} </td>
+                  <td>{{orderPerson.email}} </td>
+                  <td>{{orderPerson.shipping.shippingAddress}} </td>
+                </tr>
+    
+    
+              </tbody>
+            </table>
+          </div>
+  
+  
+        </div>
+      </div>
+    </div>
+  </div>

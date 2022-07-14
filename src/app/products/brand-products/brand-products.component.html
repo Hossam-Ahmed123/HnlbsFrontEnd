@@ -1,0 +1,35 @@
+<app-header *ngIf="!showLoggedData"></app-header> 
+<app-after-login-header *ngIf="showLoggedData"></app-after-login-header>
+<div class="best_sellers">
+    <div class="container">
+        <!-- <h2 class="trends_title">Flash Sale Products</h2> -->
+        <div class="biolife-title-box style-02 xs-margin-bottom-33px">
+            <!-- <span class="subtitle">Top Rated Products 2019 </span> -->
+            <h3 class="main-title">Brand Products</h3>
+            <!-- <p class="desc">Breif for Top Rated Products </p> -->
+        </div>
+        <div class="row">
+
+        
+            <div *ngFor="let product of allProducts" class="col-lg-3 advert_col">
+                <div class="biolife-cat-box-item">
+                    <div class="cat-thumb">
+                        <a (click)="openProduct(product)" class="cat-link">
+                            <img [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" alt="">
+                        </a>
+                    </div>
+                    <a class="cat-info" (click)="openProduct(product)">
+                        <h4 class="cat-name">{{product.name}}</h4>
+                        <span class="cat-number">{{product.price}} $</span>
+                    </a>
+                </div>
+                
+             
+            </div>
+
+         
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,824 @@
+<app-header *ngIf="!showLoggedData"></app-header>
+<app-after-login-header *ngIf="showLoggedData"></app-after-login-header>
+<!-- <pre>{{productDetails | json}}</pre> -->
+<nav class="bread-background" aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-big align-items-center container">
+    <li class="breadcrumb-item"><a routerLink="">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{productDetails?.name}}</li>
+  </ol>
+</nav>
+<div class="d-flex container p-0 mobil-block">
+  <!-- <div class="col-lg-1 pl-0">
+    </div> -->
+
+  <div class="col-lg-5 pl-0 mob-padding-15">
+    
+    <ngb-carousel #ngcarousel>
+
+      <ng-template *ngFor="let slide of childImages;let i = index" [id]="'slide' + i" ngbSlide>
+        <!-- *ngIf="i<4" -->
+        <div class="wrapper">
+
+          <lib-ngx-image-zoom
+          [thumbImage]="'http://137.184.146.80:8080/hanlbs/api/images/' + slide?.imageName"
+          [fullImage]="'http://137.184.146.80:8080/hanlbs/api/images/' + slide?.imageName"
+      >
+    </lib-ngx-image-zoom>
+          <!-- <img class="slidemasterimage" [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + slide?.imageName"> -->
+        </div>
+      </ng-template>
+
+    </ngb-carousel>
+    <ul class="carousel-thumbnail">
+      <li class="carousel-thumbnail__item list-inline-item" *ngFor="let photo of childImages;let z = index">
+        <!-- *ngIf="z<4" -->
+        <a style="cursor:pointer" (click)="navigateToSlide('slide'+z)">
+          <img class="carousel-thumbnail__img slideThumbimage"
+            [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + photo?.imageName">
+        </a>
+      </li>
+    </ul>
+
+    <!-- <button (click)="navigateToSlide('slide3')">Go to Slide 3</button> -->
+  </div>
+  <div class="col-lg-7">
+    <div class="li-blog-content">
+      <div class="li-blog-details">
+        <h3 class="li-blog-heading pt-25">
+          {{productDetails?.name}}
+        </h3>
+        <p class="innerParagraph">Sku: {{productDetails?.sku}}</p>
+        <div class="li-blog-meta">
+          <a class="post-time" href="#">
+            <fa-icon [icon]="faCalendar"></fa-icon>
+            {{productDetails?.addedOn | date}}
+          </a>
+        </div>
+
+        <p class="innerParagraph">{{productDetails?.content}}</p>
+
+        <div *ngIf="productDetails?.priceAfterDiscount != 0 || productDetails?.priceAfterDiscount != undefined" class="price">
+          <ins class="mr-2">
+            <s>
+                <span class="price-amount"><span class="currencySymbol">$</span>
+            {{productDetails?.price}}
+          </span>
+            </s>
+          
+        </ins>
+
+          <ins><span class="price-amount">
+            <span class="currencySymbol">$</span>
+            {{productDetails?.priceAfterDiscount}}
+          </span></ins>
+        </div>
+
+        <div *ngIf="productDetails?.priceAfterDiscount == 0 || productDetails?.priceAfterDiscount == undefined" class="price">
+          <ins>
+         
+                <span class="price-amount"><span class="currencySymbol">$</span>
+            {{productDetails?.price}} 
+          </span>
+        
+          
+        </ins>
+
+         
+        </div>
+        <!-- <hr />
+        <div class="rateOverAll">
+          <div class="name">Average Rating</div>
+          <div class="d-flex align-items-center">
+            <div class="mr-2">
+              <ngb-rating max="5" readonly="true" [(rate)]="overAllRate">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+            </div>
+            <span>4.5</span>
+          </div>
+        </div> -->
+        <hr />
+        <div class="price mb-3">
+          <ins><span class="price-amount"><span class="currencySymbol"></span>Colors
+            <span class="colorSmall" *ngFor="let colorText of availableColors">
+              {{colorText?.color}}
+            </span>
+            </span></ins>
+        </div>
+
+        <div class="size-items d-flex">
+          <a *ngFor="let Pcolor of availableColors" style="cursor: pointer;" (click)="openDetails(Pcolor)">
+            <img class="colorImage" [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + Pcolor?.masterImage">
+
+          </a>
+          <!-- <div (click)="openDetails(Pcolor)"  *ngFor="let Pcolor of availableColors" class="sitem" [style]="'background-color:' + Pcolor?.color + ';' ">
+
+          </div> -->
+        </div>
+        <hr />
+        <!-- <div class="price">
+          <ins><span class="price-amount"><span class="currencySymbol"></span>Size
+          </span></ins>
+        </div>
+        <div class="size-items d-flex">
+          <div class="sitem" *ngFor="let siz of productDetails?.childrenSize">
+              {{siz.size}}
+          </div>
+        </div> -->
+
+
+        <div *ngIf="showSize" class="types-2 d-flex mb-2 ">
+
+          <div class=" cc-selector typeItem" *ngFor="let siz of productDetails?.childrenSize">
+            <input checked="checked" [id]="siz.size" type="radio" [value]="siz.size" [(ngModel)]="selectedSize"
+              [ngModelOptions]="{standalone: true}">
+
+            <label class="drinkcard-cc bold-font line40" [for]="siz.size">
+
+
+
+              {{siz.size}}
+            </label>
+          </div>
+
+
+        </div>
+        <!-- <input type="number" class="form-control mt-2"  [(ngModel)]="selectedQuantity"  placeholder="enter quantity" /> -->
+<!-- 
+        <ul class="c-bag-qty">
+          <li class="qty-opt left">
+            <span class="suiiconfont sui_icon_min_16px">
+              <button [disabled]="selectedQuantity<2" class="incrementBtn" (click)="decreaseQuantity()">
+                -
+              </button>
+
+            </span>
+
+          </li>
+          <li>
+            <input type="text" [(ngModel)]="selectedQuantity" class="qty-num" />
+
+          </li>
+          <li class="qty-opt right">
+            <span class="suiiconfont sui_icon_plus_16px">
+              <button class="incrementBtn" (click)="increaseQuantity()">
+                +
+              </button>
+          
+
+            </span>
+
+          </li>
+        </ul> -->
+        <div class="buttons d-flex align-items-center justify-content-center">
+          <a *ngIf="!onlineMode" (click)="addProductToCartOffline(productDetails)"
+            class="btn add-to-cart-btn inner-btn">add to cart
+        </a>
+          <a *ngIf="onlineMode" (click)="addProductToCartOnline()" class="btn add-to-cart-btn inner-btn">add to cart
+            </a>
+
+            <a *ngIf="onlineMode" style="cursor: pointer;    color: #0055d2;" (click)="addProductToWhchlist()">
+              <fa-icon class="custom-fa" [icon]="faHeart"></fa-icon></a>
+         
+
+          <!-- <p class="pull-row">
+            <a href="#" class="btn wishlist-btn">wishlist</a>
+          </p> -->
+        </div>
+        <div class="freeshipping">
+          <div class="shippingRow">
+            <div class="d-flex">
+              <div class="shippingIcon">
+                <!-- faGetPocket -->
+                <fa-icon [icon]="faTruck"></fa-icon>
+              </div>
+              <div class="shippingData">
+                <h6 class="ship-title">
+
+                  Free Shipping
+
+                </h6>
+                <p>
+
+                  Free express shipping on orders over US$499
+
+                </p>
+                <p>
+
+                  7 - 30 Business Days
+
+                </p>
+              </div> 
+            </div>
+          </div>
+          <div class="shippingRow pt-0">
+            <div class="d-flex">
+              <div class="shippingIcon">
+                <fa-icon [icon]="faGetPocket"></fa-icon>
+              </div>
+              <div class="shippingData">
+                <h6 class="ship-title">
+
+                  <div class="openDetails smallCollapse" *ngIf="isCollapsed3">
+                    <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+                      (click)="isCollapsed3 = !isCollapsed3;" [attr.aria-expanded]="!isCollapsed3" aria-controls="collapseExample">
+                      Return Policy
+                      <fa-icon [icon]="faChevronDown"></fa-icon>
+                    </button>
+          
+                  </div>
+                  <div class="openDetails smallCollapse" *ngIf="!isCollapsed3">
+                    <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+                      (click)="isCollapsed3 = !isCollapsed3;" [attr.aria-expanded]="!isCollapsed3" aria-controls="collapseExample">
+                      Return Policy
+                      <fa-icon [icon]="faChevronUp"></fa-icon>
+                    </button>
+          
+                  </div>
+                  <div [ngbCollapse]="isCollapsed3">
+                    <p>Return or exchange within 30 days from the delivered date.
+
+                    </p>
+                  </div>
+
+                </h6>
+               
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+        
+        <!-- <div class="openDetails" *ngIf="isCollapsed3">
+          <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+            (click)="isCollapsed3 = !isCollapsed3;" [attr.aria-expanded]="!isCollapsed3" aria-controls="collapseExample">
+            Return Policy
+            <fa-icon [icon]="faChevronDown"></fa-icon>
+          </button>
+
+        </div>
+        <div class="openDetails" *ngIf="!isCollapsed3">
+          <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+            (click)="isCollapsed3 = !isCollapsed3;" [attr.aria-expanded]="!isCollapsed3" aria-controls="collapseExample">
+            Return Policy
+            <fa-icon [icon]="faChevronUp"></fa-icon>
+          </button>
+
+        </div>
+        <div [ngbCollapse]="isCollapsed3">
+          <div class="freeshipping">
+            <div class="shippingRow">
+              <div class="d-flex">
+                <div class="shippingIcon">
+                  <fa-icon [icon]="faTruck"></fa-icon>
+                </div>
+                <div class="shippingData">
+                  <h6 class="ship-title">
+  
+                    Free Shipping
+  
+                  </h6>
+                  <p>
+  
+                    Free express shipping on orders over US$129.00
+  
+                  </p>
+                  <p>
+  
+                    8 - 20 Business Days
+  
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="shippingRow pt-0">
+              <div class="d-flex">
+                <div class="shippingIcon">
+                  <fa-icon [icon]="faGetPocket"></fa-icon>
+                </div>
+                <div class="shippingData">
+                  <h6 class="ship-title">
+  
+                    Return Policy
+  
+                  </h6>
+                  <p>
+  
+  
+                    Learn More
+  
+  
+                  </p>
+  
+                </div>
+              </div>
+            </div>
+  
+  
+  
+  
+          </div>
+        </div> -->
+  
+
+
+        <hr />
+
+        <div class="openDetails" *ngIf="isCollapsed">
+          <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+            (click)="isCollapsed = !isCollapsed;" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+            Description
+            <fa-icon [icon]="faChevronDown"></fa-icon>
+          </button>
+
+        </div>
+        <div class="openDetails" *ngIf="!isCollapsed">
+          <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+            (click)="isCollapsed = !isCollapsed;" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+            Description
+            <fa-icon [icon]="faChevronUp"></fa-icon>
+          </button>
+
+        </div>
+        <div [ngbCollapse]="isCollapsed">
+          <p>
+            {{productDetails?.description}}
+          </p>
+        </div>
+        <!-- <div class="price mb-3">
+          <h6 class="price-amount mb-3"><span class="currencySymbol"></span> Description
+          </h6>
+          <p>
+            {{productDetails?.description}}
+          </p>
+        </div> -->
+        <hr />
+        <div class="openDetails" *ngIf="isCollapsed2">
+          <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+            (click)="isCollapsed2 = !isCollapsed2;" [attr.aria-expanded]="!isCollapsed2" aria-controls="collapseExample">
+            Size
+            <fa-icon [icon]="faChevronDown"></fa-icon>
+          </button>
+
+        </div>
+        <div class="openDetails" *ngIf="!isCollapsed2">
+          <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+            (click)="isCollapsed2 = !isCollapsed2;" [attr.aria-expanded]="!isCollapsed2" aria-controls="collapseExample">
+            Size
+            <fa-icon [icon]="faChevronUp"></fa-icon>
+          </button>
+
+        </div>
+        <div [ngbCollapse]="isCollapsed2">
+          <div class="table-content table-responsive size-table">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="li-product-price">Size</th>
+                  <th class="li-product-price">Length</th>
+                  <th class="li-product-price">Shoulder</th>
+                  <th class="li-product-price">Bust</th>
+                  <th class="li-product-price">Sleevelength</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let childSize of productDetails?.childrenSize">
+                  <td class="li-product-price"><span class="amount">{{childSize.size}}</span></td>
+                  <td class="li-product-price"><span class="amount">{{childSize.length}}</span></td>
+                  <td class="li-product-price"><span class="amount">{{childSize.shoulder}}</span></td>
+                  <td class="li-product-price"><span class="amount">{{childSize.bust}}</span></td>
+                  <td class="li-product-price"><span class="amount">{{childSize.sleevelength}}</span></td>
+                </tr>
+
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- <div class="price mb-3">
+          <h6 class="price-amount  mb-3"><span class="currencySymbol"></span> Size
+          </h6>
+
+          <div class="table-content table-responsive size-table">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="li-product-price">Size</th>
+                  <th class="li-product-price">Length</th>
+                  <th class="li-product-price">Shoulder</th>
+                  <th class="li-product-price">Bust</th>
+                  <th class="li-product-price">Sleevelength</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let childSize of productDetails?.childrenSize">
+                  <td class="li-product-price"><span class="amount">{{childSize.size}}</span></td>
+                  <td class="li-product-price"><span class="amount">{{childSize.length}}</span></td>
+                  <td class="li-product-price"><span class="amount">{{childSize.shoulder}}</span></td>
+                  <td class="li-product-price"><span class="amount">{{childSize.bust}}</span></td>
+                  <td class="li-product-price"><span class="amount">{{childSize.sleevelength}}</span></td>
+                </tr>
+
+
+              </tbody>
+            </table>
+          </div>
+
+        </div> -->
+        <hr />
+
+
+        <div class="openDetails" *ngIf="isCollapsed4">
+          <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+            (click)="isCollapsed4 = !isCollapsed4;" [attr.aria-expanded]="!isCollapsed4" aria-controls="collapseExample">
+            Reviews
+            <fa-icon [icon]="faChevronDown"></fa-icon>
+          </button>
+
+        </div>
+        <div class="openDetails" *ngIf="!isCollapsed4">
+          <button type="button" class="btn btn-outline-primary no-border-btn no-bg-btn"
+            (click)="isCollapsed4 = !isCollapsed4;" [attr.aria-expanded]="!isCollapsed4" aria-controls="collapseExample">
+            Reviews
+            <fa-icon [icon]="faChevronUp"></fa-icon>
+          </button>
+
+        </div>
+        <div [ngbCollapse]="isCollapsed4">
+          <div class="reviewBox">
+            <div *ngFor="let rate of productDetails?.childrenReview" class="review-item">
+              <div class="rateOverAll">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="mr-2">
+                    <h4 class="mb-0">{{rate.customerName}}</h4>
+                    <ngb-rating max="5" readonly="true" [(rate)]="rate.rating">
+                      <ng-template let-fill="fill" let-index="index">
+                        <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+                      </ng-template>
+                    </ngb-rating>
+                    <h6>  {{rate.title}}</h6>
+                    <p>
+                    {{rate.content}}
+
+
+                    </p>
+                  </div>
+
+                  <div class="reviewImage">
+                    <img class="review-image" [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + rate.reviewImage" alt="">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+    
+          
+          </div>
+ 
+        </div>
+        
+
+        <!-- <div class="table-content table-responsive size-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="li-product-price">Size</th>
+                <th class="li-product-price">Length</th>
+                <th class="li-product-price">Shoulder</th>
+                <th class="li-product-price">Bust</th>
+                <th class="li-product-price">Sleevelength</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let childSize of productDetails?.childrenSize">
+                <td class="li-product-price"><span class="amount">{{childSize.size}}</span></td>
+                <td class="li-product-price"><span class="amount">{{childSize.length}}</span></td>
+                <td class="li-product-price"><span class="amount">{{childSize.shoulder}}</span></td>
+                <td class="li-product-price"><span class="amount">{{childSize.bust}}</span></td>
+                <td class="li-product-price"><span class="amount">{{childSize.sleevelength}}</span></td>
+              </tr>
+
+
+            </tbody>
+          </table>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-lg-1 pl-0">
+  </div> -->
+  <!-- <div class="col-lg-4">
+    <div class="action-form">
+      <div class="quantity-box">
+        <span class="title">Quantity:</span>
+        <div class="qty-input">
+          <input type="number" value="1" data-max_value="20" data-min_value="1" data-step="1">
+          <a href="#" class="qty-btn btn-up"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+          <a href="#" class="qty-btn btn-down"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <div class="buttons">
+        <a *ngIf="!onlineMode" (click)="addProductToCartOffline(productDetails)" class="btn add-to-cart-btn">add to cart
+          offline</a>
+        <a *ngIf="onlineMode" (click)="addProductToCartOnline()" class="btn add-to-cart-btn">add to cart live</a>
+
+        <p class="pull-row">
+          <a href="#" class="btn wishlist-btn">wishlist</a>
+        </p>
+      </div>
+
+
+    </div>
+  </div> -->
+</div>
+<!-- <section class="detailsMasterimage" style="">
+    <img style="width: 100%;"  [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + productDetails.masterImage" >
+</section> -->
+
+
+<!-- <div class="container">
+  <div class="row">
+    <div class="li-blog-single-item pb-30">
+      <div class="li-blog-banner">
+        <img style="max-height: 300px;"
+          [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + productDetails?.masterImage">
+      </div>
+      <div class="li-blog-content">
+        <div class="li-blog-details">
+          <h3 class="li-blog-heading pt-25">
+            {{productDetails?.name}}
+          </h3>
+          <div class="li-blog-meta">
+            <a class="post-time" href="#">
+              <fa-icon [icon]="faCalendar"></fa-icon>
+              {{productDetails?.addedOn | date}}
+            </a>
+            <a class="post-time" href="#">
+                <fa-icon [icon]="faMoneyBill"></fa-icon>
+                {{productDetails?.price}}
+              </a>
+          </div>
+         
+          <p>{{productDetails?.content}}</p>
+
+
+
+
+          <div class="table-content table-responsive size-table">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="li-product-price">Size</th>
+                  <th class="li-product-price">Length</th>
+                  <th class="li-product-price">Shoulder</th>
+                  <th class="li-product-price">Bust</th>
+                  <th class="li-product-price">Sleevelength</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let childSize of productDetails?.childrenSize">
+                    <td class="li-product-price"><span class="amount">{{childSize.size}}</span></td>
+                    <td class="li-product-price"><span class="amount">{{childSize.length}}</span></td>
+                    <td class="li-product-price"><span class="amount">{{childSize.shoulder}}</span></td>
+                    <td class="li-product-price"><span class="amount">{{childSize.bust}}</span></td>
+                    <td class="li-product-price"><span class="amount">{{childSize.sleevelength}}</span></td>
+                </tr>
+           
+  
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!-- <section class="product-details-tabs">
+  <div class="container p-0">
+    <tabset class="horizontal-tabs lastStyletab transparent-tabs" type="pills">
+
+      <tab>
+        <ng-template tabHeading>
+          Description
+        </ng-template>
+        oneeeeeeeeeeeee
+      </tab>
+      <tab>
+        <ng-template tabHeading>
+          Size
+        </ng-template>
+
+        <div class="table-content table-responsive size-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="li-product-price">Size</th>
+                <th class="li-product-price">Length</th>
+                <th class="li-product-price">Shoulder</th>
+                <th class="li-product-price">Bust</th>
+                <th class="li-product-price">Sleevelength</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let childSize of productDetails?.childrenSize">
+                <td class="li-product-price"><span class="amount">{{childSize.size}}</span></td>
+                <td class="li-product-price"><span class="amount">{{childSize.length}}</span></td>
+                <td class="li-product-price"><span class="amount">{{childSize.shoulder}}</span></td>
+                <td class="li-product-price"><span class="amount">{{childSize.bust}}</span></td>
+                <td class="li-product-price"><span class="amount">{{childSize.sleevelength}}</span></td>
+              </tr>
+
+
+            </tbody>
+          </table>
+        </div>
+      </tab>
+      <tab>
+        <ng-template tabHeading>
+          Reviews
+        </ng-template>
+
+        <div class="reviewBox">
+          <div class="review-item">
+            <div class="rateOverAll">
+              <div class="d-flex align-items-center">
+                <div class="mr-2">
+                  <h4 class="mb-0">Blake Ruiz</h4>
+                  <ngb-rating max="5" readonly="true" [(rate)]="overAllRate">
+                    <ng-template let-fill="fill" let-index="index">
+                      <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+                    </ng-template>
+                  </ngb-rating>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip ex ea commodo
+
+
+                  </p>
+                </div>
+
+                <div class="reviewImage">
+                  <img src="../../../assets/images/produc.webp" class="review-image" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="review-item">
+            <div class="rateOverAll">
+              <div class="d-flex align-items-center">
+                <div class="mr-2">
+                  <h4 class="mb-0">Blake Ruiz</h4>
+                  <ngb-rating max="5" readonly="true" rate="4">
+                    <ng-template let-fill="fill" let-index="index">
+                      <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+                    </ng-template>
+                  </ngb-rating>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip ex ea commodo
+
+
+                  </p>
+                </div>
+
+                <div class="reviewImage">
+                  <img src="../../../assets/images/produc.webp" class="review-image" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="review-item">
+            <div class="rateOverAll">
+              <div class="d-flex align-items-center">
+                <div class="mr-2">
+                  <h4 class="mb-0">Blake Ruiz</h4>
+                  <ngb-rating max="5" readonly="true" rate="3">
+                    <ng-template let-fill="fill" let-index="index">
+                      <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+                    </ng-template>
+                  </ngb-rating>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip ex ea commodo
+
+
+                  </p>
+                </div>
+
+                <div class="reviewImage">
+                  <img src="../../../assets/images/produc.webp" class="review-image" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </tab>
+
+
+
+
+    </tabset>
+  </div>
+
+</section> -->
+<section>
+  <div class="best_sellers">
+    <div class="container">
+      <!-- <h2 class="trends_title">Flash Sale Products</h2> -->
+      <div class="biolife-title-box style-02 xs-margin-bottom-33px">
+        <!-- <span class="subtitle">Top Rated Products 2019 </span> -->
+        <h3 class="main-title">Products You Mak Like</h3>
+        <!-- <p class="desc">Breif for Top Rated Products </p> -->
+      </div>
+      <div class="row">
+
+
+        <div *ngFor="let product of mostCommonProducts" class="col-lg-3 col-6 advert_col">
+          <div class="biolife-cat-box-item">
+            <div class="cat-thumb">
+              <a (click)="openProduct(product)" class="cat-link">
+                <img [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" alt="">
+              </a>
+            </div>
+            <a class="cat-info" (click)="openProduct(product)">
+              <h4 class="cat-name">{{product.name}}</h4>
+              <span class="cat-number">{{product.price}} $</span>
+            </a>
+          </div>
+
+
+        </div>
+
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<div *ngIf="showLoader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- *ngIf="showRatingDialog" -->
+<div *ngIf="showRatingDialog" class="modal2 custom-modal custom-modal22" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Add review
+        </h5>
+        <button (click)="closeReviewDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-right">
+        <form (keydown.enter)="$event.preventDefault()" [(formGroup)]="addreviewForm" (ngSubmit)="addReview()">
+          <div class="stars-block">
+
+
+            <ngb-rating max="5" formControlName="rating" [(rate)]="currentRate">
+              <ng-template let-fill="fill" let-index="index">
+                <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+              </ng-template>
+            </ngb-rating>
+
+
+          </div>
+
+
+
+          <textarea formControlName="content" class="form-control m20 mb-4" placeholder="Add Your Comment "></textarea>
+
+          <div><button [disabled]="!addreviewForm.valid" type="submit"
+              class="btn btn-success app-button full-width-btn">Add Review </button></div>
+        </form>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>

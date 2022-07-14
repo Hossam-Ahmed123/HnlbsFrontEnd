@@ -1,0 +1,285 @@
+<div class=" mb-20">
+  <form [(formGroup)]="addPromoCodeForm" (ngSubmit)="addPromoCode()">
+    <div class="row">
+
+      <div class="form-group col-lg-6">
+        <h6>discountType</h6>
+        <div class="d-flex">
+          <input type="text" class="form-control" formControlName="discountType" placeholder="discountType" />
+        </div>
+
+        <span
+          *ngIf="!addPromoCodeForm.get('discountType').valid && addPromoCodeForm.get('discountType').touched">discountType</span>
+      </div>
+
+      <div class="form-group col-lg-6">
+        <h6>discountValue</h6>
+        <div class="d-flex">
+          <input type="text" class="form-control" formControlName="discountValue" placeholder="discountValue" />
+        </div>
+
+        <span
+          *ngIf="!addPromoCodeForm.get('discountValue').valid && addPromoCodeForm.get('discountValue').touched">discountValue</span>
+      </div>
+
+
+      <div class="form-group col-lg-6">
+        <h6>numUsed</h6>
+        <div class="d-flex">
+          <input type="text" class="form-control" formControlName="numUsed" placeholder="numUsed" />
+        </div>
+
+        <span *ngIf="!addPromoCodeForm.get('numUsed').valid && addPromoCodeForm.get('numUsed').touched">numUsed</span>
+      </div>
+      <div class="form-group col-lg-6">
+        <h6>promoName</h6>
+        <div class="d-flex">
+          <input type="text" class="form-control" formControlName="promoName" placeholder="promoName" />
+        </div>
+
+        <span
+          *ngIf="!addPromoCodeForm.get('promoName').valid && addPromoCodeForm.get('promoName').touched">promoName</span>
+      </div>
+      <div class="form-group col-lg-6">
+        <h6>promoType</h6>
+        <div class="d-flex">
+          <input type="text" class="form-control" formControlName="promoType" placeholder="promoType" />
+        </div>
+
+        <span
+          *ngIf="!addPromoCodeForm.get('promoType').valid && addPromoCodeForm.get('promoType').touched">promoType</span>
+      </div>
+      <div class="form-group col-lg-6">
+      </div>
+      <div class="form-group col-lg-6">
+
+        <h6 *ngIf="addSuccess" class="text-success text-center">promoCode Added Successfully</h6>
+        <h6 *ngIf="addFail" class="text-danger text-center">error in Add promoCode</h6>
+        <button [disabled]="!addPromoCodeForm.valid" type="submit"
+          class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+          add
+        </button>
+      </div>
+    </div>
+
+
+  </form>
+
+</div>
+
+
+<!-- <pre>{{allBrands | json}}</pre> -->
+<div class="clearfix"></div>
+<table *ngIf="allPromoCodes?.length>0" class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">discountType</th>
+      <th scope="col">discountValue</th>
+
+      <th scope="col">numUsed</th>
+      <th scope="col">promoName</th>
+      <th scope="col">promoType</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let promo of allPromoCodes">
+      <td>{{promo.discountType}}</td>
+      <td>{{promo.discountValue}}</td>
+      <td>{{promo.numUsed}}</td>
+      <td>{{promo.promoName}}</td>
+      <td>{{promo.promoType}}</td>
+      <td>
+        <button type="button" (click)="openEditDialog(promo)" class="btn btn-warning insideTablebtn small-btn">
+          <fa-icon [icon]="faEdit"></fa-icon>
+          edit
+        </button>
+      </td>
+      <td>
+        <button type="button" (click)="openDeletePromo(promo)" class="btn btn-danger insideTablebtn small-btn">
+          <fa-icon [icon]="faTrashAlt"></fa-icon>
+          delete
+        </button>
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+
+<div *ngIf="allPromoCodes?.length==0">
+  <div class="text-center noProjectsMessage">
+    <fa-icon [icon]="faFolderOpen"></fa-icon>
+    <h4>there is no Result to show yet .</h4>
+  </div>
+
+</div>
+
+
+<div>
+  <h6>assign promo code to user</h6>
+
+  <div class="form-group d-flex align-items-end">
+    <div class="mr-2">
+      <h6>Select User</h6>
+      <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedUserId">
+        <option *ngFor="let user of allUsers" [value]="user.id">
+          {{user.email}}
+        </option>
+      </select>
+    </div>
+    <div class="mr-2">
+      <h6>Select PromoCode</h6>
+      <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedPromoCodeId">
+        <option *ngFor="let promo of allPromoCodes" [value]="promo.id">
+          {{promo.promoName}}
+        </option>
+      </select>
+    </div>
+
+    <div>
+      <button (click)="assignPromoToUser()"  type="button"
+      class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+      assign
+    </button>
+    </div>
+    
+  </div>
+  <div class="text-center" *ngIf="assignSuccess">
+    <h6>assigned successfully</h6>
+  </div>
+</div>
+
+
+<div *ngIf="showloader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="editBrandMode" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit PromoCode </h5>
+        <button (click)="closeEditDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <!-- <pre>{{brandToEdit | json}}</pre> -->
+        <form [(formGroup)]="editPromoCodeForm" (ngSubmit)="editPromoCode()">
+
+          <div class="form-group">
+            <h6>discountType</h6>
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="discountType" placeholder="discountType" />
+            </div>
+
+            <span
+              *ngIf="!editPromoCodeForm.get('discountType').valid && editPromoCodeForm.get('discountType').touched">discountType</span>
+          </div>
+
+          <div class="form-group">
+            <h6>discountValue</h6>
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="discountValue" placeholder="discountValue" />
+            </div>
+
+            <span
+              *ngIf="!editPromoCodeForm.get('discountValue').valid && editPromoCodeForm.get('discountValue').touched">discountValue</span>
+          </div>
+
+
+          <div class="form-group">
+            <h6>numUsed</h6>
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="numUsed" placeholder="numUsed" />
+            </div>
+
+            <span
+              *ngIf="!editPromoCodeForm.get('numUsed').valid && editPromoCodeForm.get('numUsed').touched">numUsed</span>
+          </div>
+          <div class="form-group">
+            <h6>promoName</h6>
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="promoName" placeholder="promoName" />
+            </div>
+
+            <span
+              *ngIf="!editPromoCodeForm.get('promoName').valid && editPromoCodeForm.get('promoName').touched">promoName</span>
+          </div>
+          <div class="form-group">
+            <h6>promoType</h6>
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="promoType" placeholder="promoType" />
+            </div>
+
+            <span
+              *ngIf="!editPromoCodeForm.get('promoType').valid && editPromoCodeForm.get('promoType').touched">promoType</span>
+          </div>
+
+
+          <h6 *ngIf="editSuccess" class="text-success text-center">promoCode edited Successfully</h6>
+          <h6 *ngIf="editFail" class="text-danger text-center">error in edit promoCode</h6>
+          <button [disabled]="!editPromoCodeForm.valid" type="submit"
+            class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+            save
+          </button>
+        </form>
+        <!-- <pre>{{categoryToEditLast | json}}</pre> -->
+
+        <h6 class="text-center mt-3" *ngIf="editSuccessLast">edit Successfilly</h6>
+        <h6 class="text-center mt-3" *ngIf="editFailLast">error in edit</h6>
+
+
+        <h6 *ngIf="editSuccess">edited successfully</h6>
+        <!-- <pre>{{projectToDelete | json}}</pre> -->
+
+        <h6 *ngIf="editFail">error in edit</h6>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="deleteMode" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">delete PromoCode </h5>
+        <button (click)="closeDeletePromo()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <h6>are you sure that you want to delete promoCode</h6>
+        <div class="d-flex justify-content-center">
+          <button (click)="deletePromocode()" type="button" style="margin-left: 10px;"
+            class="btn btn-danger insideTablebtn small-btn">
+            delete
+          </button>
+          <button (click)="closeDeletePromo()" style="margin-left: 10px;" type="button"
+            class="btn btn-success insideTablebtn small-btn">
+            <!-- <fa-icon class="ml5" [icon]="faCheck"></fa-icon> -->
+            cancel
+
+          </button>
+
+
+        </div>
+        <!-- <pre>{{projectToDelete | json}}</pre> -->
+
+        <h6 *ngIf="deleteFail">error in delete</h6>
+
+      </div>
+    </div>
+  </div>
+</div>

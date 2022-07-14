@@ -1,0 +1,135 @@
+
+
+<!-- <pre>{{productDetails | json}}</pre> -->
+
+    <div class="li-blog-content">
+      <div class="li-blog-details">
+        <h3 class="li-blog-heading pt-25">
+          {{productDetails?.name}}
+        </h3>
+        <div class="table-content table-responsive  col-lg-9 p-0 mt-3">
+            <table class="table">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Size</th>
+                  <th>Length</th>
+                  <th>Shoulder</th>
+                  <th>Bust</th>
+                  <th>Sleevelength</th>
+                  <th>quantity</th>
+                  <th></th>
+                  </tr>
+                </thead>
+                <tbody> 
+                  <tr *ngFor="let childSize of productDetails?.childrenSize">
+                    <td class="li-product-price"><span class="amount">{{childSize.size}}</span></td>
+                    <td class="li-product-price"><span class="amount">{{childSize.length}}</span></td>
+                    <td class="li-product-price"><span class="amount">{{childSize.shoulder}}</span></td>
+                    <td class="li-product-price"><span class="amount">{{childSize.bust}}</span></td>
+                    <td class="li-product-price"><span class="amount">{{childSize.sleevelength}}</span></td>
+                    <td class="li-product-price"><span class="amount">{{childSize.quantity}}</span></td>
+                    
+                    
+                    <td>
+                      <button type="button" (click)="openEditDialog(childSize)"
+                        class="btn btn-warning insideTablebtn small-btn">
+                        <fa-icon [icon]="faEdit"></fa-icon>
+                        edit size
+                      </button>
+                    </td>
+              
+                 
+                  </tr>
+              
+                </tbody>
+              </table>
+       
+          </div>
+      </div>
+    </div>
+
+<div *ngIf="showLoader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div *ngIf="editMode" class="modal2 custom-modal custom-modal22 rating-dialog addProductDialog" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Product Size</h5>
+          <button (click)="closeEditDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body p0 text-left">
+            
+          <form [(formGroup)]="editProductSizeForm" (ngSubmit)="editProductSize()">
+        
+          
+  
+  
+      
+  
+  
+
+              <div class="form-group">
+                <h6>size</h6>
+                <input type="text" class="form-control" formControlName="size" placeholder="size" />
+              </div>
+              <div class="form-group ml5">
+                <h6>quantity</h6>
+                <input type="number" class="form-control" formControlName="quantity" placeholder="quantity" />
+              </div>
+              <div class="form-group ml5">
+                <h6>bust</h6>
+                <input type="text" class="form-control" formControlName="bust" placeholder="bust" />
+              </div>
+              <div class="form-group ml5">
+                <h6>length</h6>
+                <input type="text" class="form-control" formControlName="length" placeholder="length" />
+              </div>
+              <div class="form-group ml5">
+                <h6>shoulder</h6>
+                <input type="text" class="form-control" formControlName="shoulder" placeholder="shoulder" />
+              </div>
+              <div class="form-group ml5">
+                <h6>sleevelength</h6>
+                <input type="text" class="form-control" formControlName="sleevelength" placeholder="sleevelength" />
+              </div>
+              <div class="form-group ml5">
+                <h6>sKUCode</h6>
+                <input type="text" class="form-control" formControlName="sKUCode" placeholder="sKUCode" />
+              </div>
+  
+  
+  
+  
+  
+  
+  
+            <button [disabled]="!editProductSizeForm.valid" type="submit"
+              class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+              Save Edits
+            </button>
+            <h6 *ngIf="editSuccess" class="text-success text-center">Size edited Successfully</h6>
+            <h6 *ngIf="editFail" class="text-danger text-center">error in edit Size</h6>
+          </form>
+  
+  
+  
+  
+  
+        </div>
+      </div>
+    </div>
+  </div>

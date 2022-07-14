@@ -1,0 +1,11 @@
+<!-- <app-header></app-header> -->
+<!-- <app-login></app-login> -->
+<div class="whole-wraper" [ngClass]="languge=='ar'?'arabicContainer' : 'englishContainer'">
+
+<div class="site-wraper">
+  <router-outlet (activate)="onActivate($event)"></router-outlet>
+  <!-- <router-outlet></router-outlet> -->
+</div>
+<app-footer></app-footer>
+ 
+</div>

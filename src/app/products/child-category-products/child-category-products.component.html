@@ -1,0 +1,48 @@
+<app-header *ngIf="!showLoggedData"></app-header> 
+<app-after-login-header *ngIf="showLoggedData"></app-after-login-header>
+<div class="best_sellers">
+    <div class="container">
+        <!-- <h2 class="trends_title">Flash Sale Products</h2> -->
+        <div class="biolife-title-box style-02 xs-margin-bottom-33px">
+            <!-- <span class="subtitle">Top Rated Products 2019 </span> -->
+            <!-- <h3 class="main-title">Child Category Products</h3> -->
+            <!-- <p class="desc">Breif for Top Rated Products </p> -->
+        </div>
+        <div class="row">
+
+        <!-- <pre>{{allProducts | json}}</pre> -->
+            <div *ngFor="let product of allProducts" class="col-lg-3 advert_col  col-6">
+                <div class="biolife-cat-box-item">
+                    <ul *ngIf="product.discount !=0" class="product_marks">
+                        <li class="product_mark product_discount">{{product?.discount}}%</li>
+                      </ul>
+                    <div class="cat-thumb">
+                        <a (click)="openProduct(product)" class="cat-link">
+                            <img [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" alt="">
+                        </a>
+                    </div>
+                    <a class="cat-info" (click)="openProduct(product)">
+                        <h4 class="cat-name">{{product.name}}</h4>
+                        <!-- <span class="cat-number">{{product.price}} $</span> -->
+                    </a>
+                    <div *ngIf="product.discount !=0"
+                    class="d-flex prices-content">
+                    <span class=""><s>{{product.price}} $</s></span>
+                    <span class="">{{product.priceAfterDiscount}} $</span>
+                  </div>
+                  <div *ngIf="product.discount ==0"
+                    class="d-flex prices-content justify-content-right">
+                    <!-- <span class=""><s>{{product.price}} $</s></span> -->
+                    <span class="">{{product.priceAfterDiscount}} $</span>
+                  </div>
+                </div>
+                
+             
+            </div>
+
+         
+
+
+        </div>
+    </div>
+</div>

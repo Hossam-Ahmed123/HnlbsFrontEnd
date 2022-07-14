@@ -1,0 +1,41 @@
+<table *ngIf="allSubscriptions?.length>0" class="table">
+    <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let sub of allSubscriptions">
+            <td>{{sub?.email}} </td> 
+         
+        
+
+
+  
+    
+            
+        </tr>
+      
+   
+        </tbody>
+    </table>
+  </table>
+  
+  
+  <div *ngIf="allSubscriptions?.length==0">
+    <div class="text-center noProjectsMessage">
+      <fa-icon [icon]="faFolderOpen"></fa-icon>
+      <h4>there is no Result to show yet .</h4>
+    </div>
+  
+  </div>
+
+  <div *ngIf="showloader" class="loader loaderMaster">
+    <div class="cssload-container">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,154 @@
+<div class="row">
+  <div class="col-lg-6 mb-20">
+    <form [(formGroup)]="addBrandForm" (ngSubmit)="addBrand()">
+      <div class="form-group">
+        <h6>Brand Name</h6>
+        <div class="d-flex">
+          <input type="text" class="form-control" formControlName="name" placeholder="Brand Name" />
+        </div>
+
+        <span *ngIf="!addBrandForm.get('name').valid && addBrandForm.get('name').touched">Brand Name</span>
+      </div>
+      <div class="form-group">
+        <h6>Brand Image</h6>
+        <input multiple class="form-control" type="file" id="formFile" accept="image/*" (change)="onChange($event)" />
+        <input multiple type="text" hidden name="attach" class="form-control">
+
+      </div>
+
+      <div class="form-group">
+        <h6>Brand SKU</h6>
+        <div class="d-flex">
+          <input type="text" class="form-control" formControlName="sKUCode" placeholder="SKU" />
+        </div>
+      </div>
+
+
+      <h6 *ngIf="addSuccess" class="text-success text-center">Brand Added Successfully</h6>
+      <h6 *ngIf="addFail" class="text-danger text-center">error in Add Brand</h6>
+      <button [disabled]="!addBrandForm.valid" type="submit"
+        class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+        add New Brand
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<!-- <pre>{{allBrands | json}}</pre> -->
+<div class="clearfix"></div>
+<table *ngIf="allBrands?.length>0" class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">name</th>
+      <th scope="col">Image</th>
+      <th scope="col">SKU</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let Brand of allBrands">
+      <td>{{Brand.name}}</td>
+
+      <td>
+        <img style="max-width: 100%;width: 50px;"
+          [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + Brand.brandImage">
+      </td>
+      <td>{{Brand.sKUCode}}</td>
+     
+      <td>
+        <button type="button" (click)="openEditDialog(Brand)" class="btn btn-warning insideTablebtn small-btn">
+          <fa-icon [icon]="faEdit"></fa-icon>
+          edit
+        </button>
+      </td>
+      <td>
+        <button type="button" (click)="openDeleteProductDialog(product)"
+          class="btn btn-danger insideTablebtn small-btn">
+          <fa-icon [icon]="faTrashAlt"></fa-icon>
+          delete
+        </button>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+
+<div *ngIf="allBrands?.length==0">
+  <div class="text-center noProjectsMessage">
+    <fa-icon [icon]="faFolderOpen"></fa-icon>
+    <h4>there is no Result to show yet .</h4>
+  </div>
+
+</div>
+
+
+
+
+<div *ngIf="showloader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="editBrandMode" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Brand </h5>
+        <button (click)="closeEditDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <!-- <pre>{{brandToEdit | json}}</pre> -->
+        <form [(formGroup)]="editBrandForm" (ngSubmit)="editBrand()">
+          <div class="form-group">
+
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="name" placeholder="Brand Name" />
+            </div>
+
+            <span *ngIf="!editBrandForm.get('name').valid && editBrandForm.get('name').touched">Brand Name
+            </span>
+          </div>
+
+          <div class="form-group">
+            <h6>Brand Image</h6>
+            <input class="form-control" type="file" id="formFile222" accept="image/*" (change)="onChange4($event)" />
+            <input type="text" hidden name="attach" class="form-control">
+
+          </div>
+          <div class="form-group">
+            <h6>Brand SKU</h6>
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="sKUCode" placeholder="SKU" />
+            </div>
+          </div>
+          <button [disabled]="!editBrandForm.valid" type="submit"
+            class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+            Save
+          </button>
+        </form>
+
+        <!-- <pre>{{categoryToEditLast | json}}</pre> -->
+
+        <h6 class="text-center mt-3" *ngIf="editSuccessLast">edit Successfilly</h6>
+        <h6 class="text-center mt-3" *ngIf="editFailLast">error in edit</h6>
+
+
+        <h6 *ngIf="editSuccess">edited successfully</h6>
+        <!-- <pre>{{projectToDelete | json}}</pre> -->
+
+        <h6 *ngIf="editFail">error in edit</h6>
+
+      </div>
+    </div>
+  </div>
+</div>

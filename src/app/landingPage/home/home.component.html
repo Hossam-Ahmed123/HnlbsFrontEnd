@@ -1,0 +1,374 @@
+<app-header *ngIf="!showLoggedData"></app-header>
+<app-after-login-header *ngIf="showLoggedData"></app-after-login-header>
+
+<!-- <div class="timer" *ngIf="model">
+    <h2>Time Left</h2>
+    <span id="days"> {{daysToDday}} </span> Day(s)
+    <span id="hours"> {{hoursToDday}} </span>Hrs
+    <span id="minutes"> {{minutesToDday}} </span>Min
+    <span id="seconds"> {{secondsToDday}} </span>S <br>
+    <div class="mt-3">
+      <button  (click)="stopInterval()" class="btn btn-danger btn- 
+          sm">Stop</button>
+      <button  (click)="startInterval()" class="btn btn-info btn-sm 
+          "id="resetbtn">Restart</button>
+    </div>
+  </div> -->
+
+<section class="mt-4">
+  <div class=" virtualContainer">
+    <div class="row">
+      <!-- <div class="col-lg-2 col-sm-6 col-12 sideBarCustom">
+        <div class="biolife-vertical-menu none-box-shadow">
+          <div class="vertical-menu vertical-category-block always ">
+            <div class="block-title">
+              <span class="menu-icon">
+                <span class="line-1"></span>
+                <span class="line-2"></span>
+                <span class="line-3"></span>
+              </span>
+              <span class="menu-title">All Sub categories</span>
+              <span class="angle" data-tgleclass="fa fa-caret-down"><i class="fa fa-caret-up"
+                  aria-hidden="true"></i></span>
+            </div>
+            <div class="wrap-menu">
+              <ul class="menu clone-main-menu">
+                <li *ngFor="let childCat of childCatForMaster;let i = index">
+                  <a *ngIf="i<6" style="cursor: pointer;"
+                    (click)="openChildcategryProducts(childCat)">{{childCat.name}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-lg-12 col-sm-6 col-12">
+        <img style="max-width: 100%;" [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + masterCover">
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="best_sellers">
+  <div class="virtualContainer">
+    <!-- <h2 class="trends_title">Flash Sale Products</h2> -->
+    <div class="biolife-title-box style-02 xs-margin-bottom-33px">
+      <!-- <span class="subtitle">Flash Sale</span>
+      <h3 class="main-title">Flash Sale Name</h3>
+      <p class="desc">Flash Sale Description</p> -->
+      <div class="falshSaleContainer">
+        <div class="flash-counter d-flex justify-content-between align-items-center">
+          <div class="text-left">
+            <h3 class="main-title flashTitle">{{flashSaleobj?.name}}</h3>
+            <!-- <p class="desc">{{flashSaleobj?.discription}}</p>  -->
+          </div>
+
+          <div>
+            <h1> Deal of the day</h1>
+          </div>
+
+          <div class="">
+            <h3 class="flashEnd">Ends in</h3>
+            <!-- timer-container -->
+            <div class="d-flex  justify-content-center">
+              <h3 class="mw40 data-c">{{daysToDday}}</h3>
+              <h3 class="mw40 data-c">{{hoursToDday}}</h3>
+              <h3 class="mw40 data-c">{{minutesToDday}}</h3>
+              <h3 class="mw40 data-c">{{secondsToDday}}</h3>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="deals">
+        <div class="deals_timer d-flex flex-row align-items-center justify-content-start">
+
+          <div class="deals_timer_title_container">
+            <div class="deals_timer_title">Hurry Up</div>
+            <div class="deals_timer_subtitle">Flash Sale in:</div>
+          </div>
+          <div class="deals_timer_content ml-auto">
+            <div class="deals_timer_box clearfix" data-target-time="">
+              <div class="deals_timer_unit">
+                <div id="deals_timer1_hr" class="deals_timer_hr">{{daysToDday}}</div>
+                <span>Days</span>
+              </div>
+              <div class="deals_timer_unit">
+                <div id="deals_timer1_hr" class="deals_timer_hr">{{hoursToDday}}</div>
+                <span>hours</span>
+              </div>
+              <div class="deals_timer_unit">
+                <div id="deals_timer1_min" class="deals_timer_min">{{minutesToDday}}</div>
+                <span>mins</span>
+              </div>
+              <div class="deals_timer_unit">
+                <div id="deals_timer1_sec" class="deals_timer_sec">{{secondsToDday}}</div>
+                <span>secs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <h3 class="main-title">{{flashSaleobj?.name}}</h3>
+            <p class="desc">{{flashSaleobj?.discription}} </p> -->
+    </div>
+    <div class="row">
+
+      <!-- <pre>{{flashSaleProducts | json}}</pre> -->
+      <div *ngFor="let product of flashSaleProducts;let i = index" class="col-lg-3 advert_col">
+        <div *ngIf="i<4" class="biolife-cat-box-item">
+          <ul *ngIf="product.discount !=0" class="product_marks">
+            <li class="product_mark product_discount">{{product?.discount}}%</li>
+          </ul>
+          <div class="cat-thumb">
+            <a (click)="openProduct(product)" class="cat-link">
+              <img [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" alt="">
+            </a>
+          </div>
+          <a class="cat-info" (click)="openProduct(product)">
+            <h4 class="cat-name">{{product.name}}</h4>
+
+          </a>
+          <div *ngIf="product.discount !=0"
+            class="d-flex prices-content">
+            <span class=""><s>{{product.price}} $</s></span>
+            <span class="">{{product.priceAfterDiscount}} $</span>
+          </div>
+          <div *ngIf="product.discount ==0"
+            class="d-flex prices-content">
+            <!-- <span class=""><s>{{product.price}} $</s></span> -->
+            <span class="">{{product.priceAfterDiscount}} $</span>
+          </div>
+          <!-- <a *ngIf="!onlineMode" (click)="addProductToCartOffline(product)" class="btn add-to-cart-btn addToCartBtnHome">add to cart
+            offline</a>
+          <a *ngIf="onlineMode" (click)="addProductToCartOnline(product)" class="btn add-to-cart-btn addToCartBtnHome">add to cart live</a> -->
+        </div>
+
+        <!-- Advert Item -->
+
+        <!-- <div class="advert d-flex flex-row align-items-center justify-content-start">
+                    <div class="advert_content">
+                        <div class="advert_title"><a (click)="openProduct(product)" style="cursor: pointer;">{{product.name}}</a></div>
+                        <div class="advert_text">{{product.description}}</div>
+                        <div>{{product.price}} $</div>
+                    </div>
+                    <div class="ml-auto"><div class="advert_image">
+                        <img style="max-width: 100%;"  [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" >
+                    </div></div>
+                    
+                </div> -->
+      </div>
+
+
+
+
+    </div>
+
+    <div *ngIf="flashSaleProducts?.length==0 ||flashSaleProducts== undefined ">
+      <div class="text-center noProjectsMessage">
+        <fa-icon [icon]="faFolderOpen"></fa-icon>
+        <h4>there is no Result to show yet .</h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="adverts categoriesSection shoppingCategory">
+  <div class="virtualContainer">
+    <div class="biolife-title-box style-02 xs-margin-bottom-33px">
+      <h3 class="main-title">Shop By Category</h3>
+    </div>
+    <!-- <pre>{{childCatForMaster | json}}</pre> -->
+    <div class="cat-custom-container cat-custom-container-full shopByCat">
+      <div class="text-right">
+        <a class="shopLink" href="#">
+          View All
+        </a>
+      </div>
+      <!-- <div class="col-lg-3">
+        <div class="popular_categories_content">
+          <div class="popular_categories_title">Shop By Category</div>
+        </div>
+      </div> -->
+      <!-- <div class="col-lg-9 d-flex"> -->
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-4" *ngFor="let childCat of childCatForMaster;let i = index">
+          <div (click)="openChildcategryProducts(childCat)"
+            class="box pointer featured-c d-flex  align-items-center  justify-content-between">
+            <!-- <h3>
+                  <a  (click)="openChildcategryProducts(childCat)">{{childCat.name}}</a>
+                </h3> -->
+            <a class="pointer" (click)="openChildcategryProducts(childCat)">
+              <img style="width: 50px;height: 50px;border-radius: 50%;"
+                [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + childCat.coverPhoto" alt="">
+            </a>
+
+            <a class="pointer" (click)="openChildcategryProducts(childCat)">{{childCat.name}}</a>
+            <!-- <div class="btn-wrap">
+                <a (click)="openChildcategryProducts(childCat)" class="btn-buy">{{childCat.name}}</a>
+              </div> -->
+          </div>
+        </div>
+      </div>
+
+      <!--      
+        <div class="col-lg-3" *ngFor="let childCat of childCatForMaster;let i = index">
+
+          <div *ngIf="i<10" class=" d-flex flex-row align-items-center justify-content-start">
+            <div class="char_content">
+              <div class="char_title">
+                <a class="category-link" (click)="openChildcategryProducts(childCat)">{{childCat.name}}</a>
+
+
+              </div>
+            </div>
+          </div>
+        </div> -->
+      <!-- </div> -->
+
+
+
+
+
+
+    </div>
+
+  </div>
+  <div *ngIf="childCatForMaster?.length==0 ||childCatForMaster== undefined ">
+    <div class="text-center noProjectsMessage">
+      <fa-icon [icon]="faFolderOpen"></fa-icon>
+      <h4>there is no Result to show yet .</h4>
+    </div>
+  </div>
+</div>
+
+<div class="best_sellers">
+  <div class="virtualContainer">
+    <!-- <h2 class="trends_title">Flash Sale Products</h2> -->
+    <div class="biolife-title-box style-02 xs-margin-bottom-33px">
+      <span class="subtitle">Top Rated Products 2019 </span>
+      <h3 class="main-title">Top Rated Products</h3>
+      <p class="desc">Breif for Top Rated Products </p>
+    </div>
+    <div class="row">
+
+
+      <div *ngFor="let product of topRatedProducts;let i = index" class="col-lg-3 advert_col">
+        <div *ngIf="i<4" class="biolife-cat-box-item">
+          <div class="cat-thumb">
+            <a (click)="openProduct(product)" class="cat-link">
+              <img [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" alt="">
+            </a>
+          </div>
+          <a class="cat-info" (click)="openProduct(product)">
+            <h4 class="cat-name">{{product.name}}</h4>
+            <span class="cat-number">{{product.price}} $</span>
+          </a>
+
+          <!-- <a *ngIf="!onlineMode" (click)="addProductToCartOffline(product)" class="btn add-to-cart-btn addToCartBtnHome">add to cart
+            offline</a>
+          <a *ngIf="onlineMode" (click)="addProductToCartOnline(product)" class="btn add-to-cart-btn addToCartBtnHome">add to cart live</a> -->
+        </div>
+
+        <!-- Advert Item -->
+
+        <!-- <div class="advert d-flex flex-row align-items-center justify-content-start">
+                    <div class="advert_content">
+                        <div class="advert_title"><a (click)="openProduct(product)" style="cursor: pointer;">{{product.name}}</a></div>
+                        <div class="advert_text">{{product.description}}</div>
+                        <div>{{product.price}} $</div>
+                    </div>
+                    <div class="ml-auto"><div class="advert_image">
+                        <img style="max-width: 100%;"  [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage" >
+                    </div></div>
+                    
+                </div> -->
+      </div>
+
+
+
+
+    </div>
+    <div *ngIf="topRatedProducts?.length==0 ||topRatedProducts== undefined ">
+      <div class="text-center noProjectsMessage">
+        <fa-icon [icon]="faFolderOpen"></fa-icon>
+        <h4>there is no Result to show yet .</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="adverts categoriesSection">
+  <div class="virtualContainer">
+    <div class="biolife-title-box style-02 xs-margin-bottom-33px">
+      <h3 class="main-title">Shop By Brand</h3>
+    </div>
+    <!-- <pre>{{allBrands | json}}</pre> -->
+    <div class="row cat-custom-container cat-custom-container-full">
+      <!-- <div class="col-lg-3">
+        <div class="popular_categories_content">
+          <div class="popular_categories_title">Shop By Category</div>
+        </div>
+      </div> -->
+      <!-- <div class="col-lg-9 d-flex"> -->
+
+      <div class="col-lg-12 mb-4" *ngFor="let brand of allBrands;let i = index">
+
+        <!-- <h3 class="brand-title">
+            <a (click)="openBrandProducts(brand)">{{brand.name}}</a>
+          </h3> -->
+        <a (click)="openBrandProducts(brand)">
+          <img [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + brand.brandImage" alt="">
+        </a>
+
+
+      </div>
+      <!-- <div class="col-lg-3" *ngFor="let brand of allBrands;let i = index">
+
+          <div *ngIf="i<10" class=" d-flex flex-row align-items-center justify-content-start">
+            <div class="char_content">
+              <div class="char_title">
+                <a class="category-link" (click)="openBrandProducts(brand)">{{brand.name}}</a>
+
+
+              </div>
+            </div>
+          </div>
+        </div> -->
+      <!-- </div> -->
+
+
+
+
+
+
+    </div>
+    <div class="clearfix"></div>
+    <div class="text-center">
+      <a class="viewAllBtn" href="#">
+        View All
+      </a>
+    </div>
+  </div>
+  <div *ngIf="allBrands?.length==0 ||allBrands== undefined ">
+    <div class="text-center noProjectsMessage">
+      <fa-icon [icon]="faFolderOpen"></fa-icon>
+      <h4>there is no Result to show yet .</h4>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showLoader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

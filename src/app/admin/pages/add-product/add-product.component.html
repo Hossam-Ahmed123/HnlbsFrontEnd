@@ -1,0 +1,457 @@
+<div>
+  <button (click)="openAddProductDialog()" type="button"
+    class="btn btn-success nobg-btn auto-width-btn normal-padding custom-auto-btn">
+    <span style="padding-left: 5px;">+</span>
+    New
+  </button>
+</div>
+
+
+<div class="mt-3" *ngIf="addProductDialog">
+  <div class="modal-header noborder">
+    <button (click)="closeAddProductDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="">
+    <div class="">
+      <!-- <div class="">
+        <h5 class="modal-title">Add New Product</h5>
+        <button (click)="closeAddProductDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+      <div class="sssss">
+
+        <form [(formGroup)]="addProductForm" (ngSubmit)="addProduct()">
+          <div class="form-group">
+            <h6>Product Name</h6>
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="name" placeholder="Product Name" />
+            </div>
+
+            <span *ngIf="!addProductForm.get('name').valid && addProductForm.get('name').touched">Product Name</span>
+          </div>
+          <div class="form-group">
+            <h6>Product description</h6>
+            <textarea class="form-control" formControlName="description" placeholder="Product description"></textarea>
+          </div>
+          <div class="form-group">
+            <h6>Product content</h6>
+            <input type="text" class="form-control" formControlName="content" placeholder="Product content" />
+          </div>
+          <div class="form-group d-flex">
+            <div>
+              <h6>Product Category</h6>
+              <select class="form-control" (change)="getSubCategory()" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="selectedCategory">
+                <option value="0" disabled>select Category</option>
+                <option [value]="Category.categoryId" *ngFor="let Category of allCategories">{{Category?.name}}
+                </option>
+              </select>
+
+            </div>
+            <div class="ml5" *ngIf="childCategories?.length>0">
+              <h6>Product sub Category</h6>
+              <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="targetedFormcategory">
+                <option value="0" disabled>select sub Category</option>
+                <option [value]="Category.categoryId" *ngFor="let Category of childCategories">{{Category?.name}}
+                </option>
+              </select>
+            </div>
+
+
+
+            <div class=" ml5">
+
+              <h6>Product Brand</h6>
+              <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedBrand">
+                <option value="0" disabled>select Brand</option>
+                <option [value]="Brand.id" *ngFor="let Brand of allBrands">{{Brand?.name}}
+                </option>
+              </select>
+            </div>
+
+            <div class=" ml5">
+              <div>
+                <h6>price</h6>
+                <input type="number" class="form-control" formControlName="price" placeholder="price" />
+              </div>
+            </div>
+
+       
+
+            <div class=" ml5">
+              <div>
+                <h6>discount</h6>
+                <input type="number" class="form-control" formControlName="discount" placeholder="discount" />
+              </div>
+            </div>
+
+
+          </div>
+
+
+
+          <div class="d-flex">
+            <div class="form-group ">
+              <h6>Product Color</h6>
+              <input type="text"   formControlName="color" class="form-control"  />
+  
+            </div> 
+            <div class="form-group ml5">
+              <h6>Product colorGroupCode</h6>
+              <input type="text"   formControlName="colorGroupCode" class="form-control"  />
+  
+            </div>
+            <div class="form-group ml5">
+              <h6>Product colorSKUCode</h6>
+              <input type="text"   formControlName="colorSKUCode" class="form-control"  />
+  
+            </div>
+
+          </div>
+
+         
+
+
+
+
+          <div class="d-flex">
+            <div class="form-group">
+              <h6>Product Image</h6>
+
+              <div>
+
+                <div>
+                  <input  #myInptMaster class="form-control" type="file" id="formFile" accept="image/*"
+                    (change)="onChange($event)" />
+                  <input multiple type="text" hidden name="attach" class="form-control">
+
+                </div>
+              </div>
+
+
+
+            </div>
+            <div class="form-group ml5">
+              <h6>Product details Images</h6>
+              <div>
+                <input #myInptDetails multiple class="form-control" type="file" id="formFile2" accept="image/*"
+                  (change)="onFileSelect($event)" />
+                <input multiple type="text" hidden name="attach" class="form-control">
+
+              </div>
+              <!-- <ul class="upload-list">
+                <li *ngFor="let upload of selectedUploadedFiles;let i = index">
+                  {{upload?.name}}
+                  <button (click)="onRemoveFile2(i)" class="btn btn-default add-remove-btn remove-file" type="button">
+                    <fa-icon [icon]="faTimes"></fa-icon>
+                  </button>
+  
+                </li>
+  
+              </ul> -->
+            </div>
+
+
+          
+          </div>
+          <button (click)="onAddSize()" class="btn btn-success nobg-btn auto-width-btn normal-padding custom-auto-btn mb-2" type="button">add size</button>
+
+          <div class="">
+            <div class="form-group" formArrayName="childrenSize"
+              *ngFor="let relati of addProductForm.get('childrenSize')['controls']; let i = index">
+              <div class="relevants" [formGroupName]="i">
+                <div class="d-flex">
+          
+                  <div>
+                    <input type="text" class="form-control" formControlName="bust" placeholder="bust" />
+                  </div>
+
+                  <div class="ml5">
+                    <input type="text" class="form-control" formControlName="length" placeholder="length" />
+                  </div>
+
+                  <div class="ml5">
+                    <input type="text" class="form-control" formControlName="shoulder" placeholder="shoulder" />
+                  </div>
+                  <div class="ml5">
+                    <input type="text" class="form-control" formControlName="sleevelength" placeholder="sleevelength" />
+                  </div>
+                  <div class="ml5">
+                    <input type="text" class="form-control" formControlName="size" placeholder="size" />
+                  </div>
+                  <div class="ml5">
+                    <input type="number" class="form-control" formControlName="quantity" placeholder="quantity" />
+                  </div>
+                  <!-- <div class=" ml5">
+               
+                      <input type="text" class="form-control" formControlName="sKUCode" placeholder="sKUCode" />
+              
+                  </div> -->
+                  <button (click)="onAddSize()" class="btn btn-default add-remove-btn" type="button">+</button>
+
+                  <button *ngIf="i>0" (click)="onRemoveSize(i)" class="btn btn-default add-remove-btn" type="button">-</button>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="form-group">
+              <button (click)="onAddSize()" class="btn btn-default add-remove-btn" type="button">+</button>
+            </div> -->
+          </div>
+
+
+
+
+          <!-- <div class="form-group">
+            <h6>base64Master</h6>
+            <input type="text" class="form-control" formControlName="base64Master" placeholder="base64Master" />
+          </div> -->
+
+          <h6 *ngIf="addProductSuccess" class="text-success text-center">Product Added Successfully</h6>
+          <h6 *ngIf="addProductFail" class="text-danger text-center">error in Add Product</h6>
+          <!-- [disabled]="!addProductForm.valid" -->
+          <button [disabled]="!addProductForm.valid" type="submit"
+            class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+            add product
+          </button>
+        </form>
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="form-group d-flex m-t10">
+  <div>
+    <select class="form-control" (change)="getSubCategoryForSearch()" [(ngModel)]="selectedCategoryForSearch">
+      <option value="0" disabled>select Category</option>
+      <option [value]="Category.categoryId" *ngFor="let Category of allCategories">{{Category?.name}}
+      </option>
+    </select>
+  </div>
+  <div class="ml5" *ngIf="childCategories?.length>0">
+    <select class="form-control" [(ngModel)]="selectedSubCategoryForSearch">
+      <option [value]="Category.categoryId" *ngFor="let Category of childCategories">{{Category?.name}}
+      </option>
+    </select>
+  </div>
+
+  <button (click)="getProductsByCategory()" type="button"
+    class="btn btn-success nobg-btn auto-width-btn normal-padding custom-auto-width-btn ml-10">
+    get Products
+  </button>
+
+
+</div>
+
+
+
+<!-- <pre>{{allTableData | json}}</pre> -->
+
+<table *ngIf="allTableData?.length>0" class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">name</th>
+      <!-- <th scope="col">description</th> -->
+      <th scope="col">price</th>
+      <!-- <th scope="col">quantity</th> -->
+      <th scope="col">sku</th>
+      <th scope="col">discount</th>
+      <th scope="col">masterImage</th>
+
+      <th scope="col">addedOn</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of allTableData">
+      <td>
+        <a style="cursor: pointer;" (click)="editProductSize(product)">
+          {{product.name}}
+        </a>
+
+      </td>
+      <!-- <td>{{product.description}}</td> -->
+      <td>{{product.price}}</td>
+      <!-- <td>{{product.quantity}}</td> -->
+      <td>{{product.sku}}</td>
+      <td>{{product.discount}}</td>
+
+      <td>
+        <img style="max-width: 100%;width: 50px;"
+          [src]="'http://137.184.146.80:8080/hanlbs/api/images/' + product.masterImage">
+      </td>
+      <td>{{product.addedOn | date}}</td>
+      <td>
+        <button type="button" (click)="openEditProductDialog(product)" class="btn btn-warning insideTablebtn small-btn">
+          <fa-icon [icon]="faEdit"></fa-icon>
+          edit
+        </button>
+      </td>
+      <td>
+        <button type="button" (click)="editProductSize(product)" class="btn btn-warning insideTablebtn small-btn">
+          <fa-icon [icon]="faEdit"></fa-icon>
+          edit size
+        </button>
+      </td>
+
+      <td>
+        <button type="button" (click)="openDeleteProductDialog(product)"
+          class="btn btn-danger insideTablebtn small-btn">
+          <fa-icon [icon]="faTrashAlt"></fa-icon>
+          delete
+        </button>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<div *ngIf="allTableData?.length==0">
+  <div class="text-center noProjectsMessage">
+    <fa-icon [icon]="faFolderOpen"></fa-icon>
+    <h4>there is no Result to show yet .</h4>
+  </div>
+
+</div>
+
+
+
+
+
+
+<div *ngIf="DeleteMode" class="modal2 custom-modal custom-modal22 rating-dialog " role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Product</h5>
+        <button (click)="closeDeleteProductDialog()" type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <h6>are you sure that you want to delete product</h6>
+        <div class="d-flex justify-content-center">
+          <button (click)="deleteProduct()" type="button" style="margin-left: 10px;"
+            class="btn btn-danger insideTablebtn small-btn">
+            delete
+          </button>
+          <button (click)="closeDeleteProductDialog()" style="margin-left: 10px;" type="button"
+            class="btn btn-success insideTablebtn small-btn">
+            <!-- <fa-icon class="ml5" [icon]="faCheck"></fa-icon> -->
+            cancel
+
+          </button>
+
+
+        </div>
+        <!-- <pre>{{projectToDelete | json}}</pre> -->
+
+        <h6 *ngIf="deleteFail">error in delete</h6>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="editMode" class="modal2 custom-modal custom-modal22 rating-dialog addProductDialog" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Product</h5>
+        <button (click)="closeEditProductDialog()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p0 text-left">
+        <form [(formGroup)]="editProductForm" (ngSubmit)="editProduct()">
+          <div class="form-group">
+            <h6>Product Name</h6>
+            <div class="d-flex">
+              <input type="text" class="form-control" formControlName="name" placeholder="Product Name" />
+            </div>
+
+            <span *ngIf="!editProductForm.get('name').valid && editProductForm.get('name').touched">Product Name</span>
+          </div>
+          <div class="form-group">
+            <h6>Product description</h6>
+            <input type="text" class="form-control" formControlName="description" placeholder="Product description" />
+          </div>
+
+
+          <div class="form-group">
+            <h6>Product content</h6>
+            <input type="color" class="form-control" formControlName="content" placeholder="Product content" />
+          </div>
+
+
+
+
+
+          <div class="d-flex">
+            <div class="form-group">
+              <h6>price</h6>
+              <input type="number" class="form-control" formControlName="price" placeholder="price" />
+            </div>
+            <div class="form-group ml5">
+              <h6>quantity</h6>
+              <input type="number" class="form-control" formControlName="quantity" placeholder="quantity" />
+            </div>
+            <div class="form-group ml5">
+              <h6>sku</h6>
+              <input type="text" class="form-control" formControlName="sku" placeholder="sku" />
+            </div>
+            <div class="form-group ml5">
+              <h6>discount</h6>
+              <input type="text" class="form-control" formControlName="discount" placeholder="discount" />
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+          <button [disabled]="!editProductForm.valid" type="submit"
+            class="btn btn-success generalBtnStyle add-project-submit mr20 normal-padding">
+            Save Edits
+          </button>
+          <h6 *ngIf="editProductSuccess" class="text-success text-center">Product edited Successfully</h6>
+          <h6 *ngIf="editFail" class="text-danger text-center">error in edit Product</h6>
+        </form>
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<div *ngIf="showLoader" class="loader loaderMaster">
+  <div class="cssload-container">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
